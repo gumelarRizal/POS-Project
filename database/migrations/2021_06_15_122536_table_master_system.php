@@ -17,6 +17,8 @@ class TableMasterSystem extends Migration
             $table->increments('id');
             $table->string('SYSTEM_CD');
             $table->string('SYSTEM_VALUE');
+            $table->string('CHILD_VALUE');
+            $table->string('CHILD_TEXT');
             $table->string('CREATED_BY');
             $table->timestamps();
         });
