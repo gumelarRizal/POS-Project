@@ -24,11 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $ulData = DB::table('mt_system')
-                    ->select('SYSTEM_VALUE')
-                    ->distinct()
-                    ->where('SYSTEM_CD','like','MENU%')
-                    ->get();
         return view('home');
     }
 }
