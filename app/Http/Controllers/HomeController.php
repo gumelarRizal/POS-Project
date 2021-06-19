@@ -29,6 +29,6 @@ class HomeController extends Controller
                     ->distinct()
                     ->where('SYSTEM_CD','like','MENU%')
                     ->get();
-        return view('home',['ulData'=>$ulData]);
+        return view('home');
     }
 }

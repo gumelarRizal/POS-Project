@@ -7,6 +7,13 @@
             <a href="index.html">LV</a>
         </div>
         <ul class="sidebar-menu">
+            @php
+                $ulData = DB::table('mt_system')
+                    ->select('SYSTEM_VALUE')
+                    ->distinct()
+                    ->where('SYSTEM_CD', 'like', 'MENU%')
+                    ->get();
+            @endphp
             @foreach ($ulData as $data)
                 <li class="menu-header">{{ $data->SYSTEM_VALUE }}</li>
                 @php
