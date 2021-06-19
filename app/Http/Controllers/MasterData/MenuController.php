@@ -20,7 +20,8 @@ class MenuController extends Controller
     public function index()
     {
         $kode_kelas = '';
-        return view('MasterData.Menu.index');
+        $titleBreadcrump = 'Menu';
+        return view('MasterData.Menu.menu',['titleBreadcrump'=>$titleBreadcrump]);
     }
 
     /**
