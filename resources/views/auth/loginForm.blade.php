@@ -25,13 +25,17 @@
                             <div class="card-body">
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
+
+                                    @if (session('error'))
+                                        <div class="alert alert-danger">{{ session('error') }}</div>
+                                    @endif
                                     <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input id="email" type="email" class="form-control" @error('email') is-invalid
-                                            @enderror" name="email" value="{{ old('email') }}" required
-                                            autocomplete="email" autofocus>
+                                        <label for="email">Username / Email</label>
+                                        <input id="username" type="text"
+                                            class="form-control @error('username') is-invalid @enderror" name="username"
+                                            value="{{ old('username') }}" required autocomplete="username" autofocus>
                                         <div class="invalid-feedback">
-                                            @error('email')
+                                            @error('username')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>

@@ -38,18 +38,33 @@
                                             @enderror
                                         </div>
                                     </div>
-
-                                    <div class="form-group">
-                                        <label for="email">{{ __('Alamat E-mail') }}</label>
-                                        <input id="email" type="email"
-                                            class="form-control @error('email') is-invalid @enderror" name="email"
-                                            value="{{ old('email') }}" required autocomplete="email">
-                                        <div class="invalid-feedback">
-                                            @error('email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <label for="email">{{ __('Alamat E-mail') }}</label>
+                                            <input id="email" type="email"
+                                                class="form-control @error('email') is-invalid @enderror" name="email"
+                                                value="{{ old('email') }}" required autocomplete="email">
+                                            <div class="invalid-feedback">
+                                                @error('email')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="email">{{ __('Username') }}</label>
+                                            <input id="username" type="text"
+                                                class="form-control @error('username') is-invalid @enderror"
+                                                name="username" value="{{ old('username') }}" required
+                                                autocomplete="username">
+                                            <div class="invalid-feedback">
+                                                @error('username')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
 
