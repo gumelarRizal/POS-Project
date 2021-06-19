@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MasterData\PegawaiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,7 @@ Route::get('/FormRegister',function(){
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Route::resource('/Pegawai', [PegawaiController::class])->middleware('auth');
+
+Route::resource('Pegawai', 'App\Http\Controllers\MasterData\PegawaiController');
