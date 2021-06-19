@@ -29,3 +29,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //Route::resource('/Pegawai', [PegawaiController::class])->middleware('auth');
 
 Route::resource('Pegawai', 'App\Http\Controllers\MasterData\PegawaiController');
+Route::resource('Menu', 'App\Http\Controllers\MasterData\MenuController');
