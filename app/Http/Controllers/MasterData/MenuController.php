@@ -21,7 +21,8 @@ class MenuController extends Controller
     {
         $kode_kelas = '';
         $titleBreadcrump = 'Menu';
-        return view('MasterData.Menu.menu',['titleBreadcrump'=>$titleBreadcrump]);
+        $listMenu = Menu::all();
+        return view('MasterData.Menu.menu',['titleBreadcrump'=>$titleBreadcrump,'listMenu'=>$listMenu]);
     }
 
     /**

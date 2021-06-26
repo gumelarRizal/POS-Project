@@ -22,7 +22,7 @@
                         ->get();
                 @endphp
                 @foreach ($ul as $item)
-                    <li><a class="nav-link" href="blank.html"><i class="fas fa-fire"></i>
+                    <li><a class="nav-link" href="{{ $item->CHILD_VALUE }}"><i class="fas fa-fire"></i>
                             <span>{{ $item->CHILD_VALUE }}</span></a></li>
                 @endforeach
             @endforeach

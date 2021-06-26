@@ -16,7 +16,7 @@ use App\Http\Controllers\MasterData\PegawaiController;
 
 Route::get('/', function () {
     return view('auth.loginForm');
-})->name('index');
+})->middleware('auth')->name('index');
 
 Route::get('/FormRegister',function(){
     return view('auth.registerForm');
@@ -28,4 +28,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::resource('Pegawai', 'App\Http\Controllers\MasterData\PegawaiController');
-Route::resource('Menu', 'App\Http\Controllers\MasterData\MenuController');
+Route::resource('Menu', 'App\Http\Controllers\MasterData\MenuController')->name('menu');

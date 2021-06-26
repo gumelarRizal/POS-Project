@@ -35,7 +35,6 @@
             @include('Layouts.Partials.Footer')
         </div>
     </div>
-    @yield('modal')
     @include('Layouts.Partials.Scripts')
 </body>
 
