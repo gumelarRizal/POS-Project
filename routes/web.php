@@ -29,5 +29,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/Pegawai/search', [PegawaiController::class, 'search'])->name('Pegawai.search');
 Route::resource('Pegawai', 'App\Http\Controllers\MasterData\PegawaiController');
 
-Route::resource('Menu', 'App\Http\Controllers\MasterData\MenuController')->name('menu');
+Route::resource('Menu', 'App\Http\Controllers\MasterData\MenuController');
 
