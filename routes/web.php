@@ -31,4 +31,3 @@ Route::resource('Pegawai', 'App\Http\Controllers\MasterData\PegawaiController');
 
 Route::resource('Menu', 'App\Http\Controllers\MasterData\MenuController')->name('menu');
 
-Route::resource('Menu', 'App\Http\Controllers\MasterData\MenuController');
