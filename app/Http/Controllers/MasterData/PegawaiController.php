@@ -8,7 +8,7 @@ use App\Models\MasterData\Pegawai;
 
 class PegawaiController extends Controller
 {
-    protected function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
     }
@@ -20,8 +20,9 @@ class PegawaiController extends Controller
      */
     public function index()
     {
+        $titleBreadcrump = "Pegawai";
         $pegawai = Pegawai::orderBy('created_at', 'desc')->paginate(10);
-        return view('MasterData.Pegawai.index', ['pegawai' => $pegawai]);
+        return view('MasterData.Pegawai.index', ['pegawai' => $pegawai, 'titleBreadcrump' => $titleBreadcrump]);
     }
 
     /**
