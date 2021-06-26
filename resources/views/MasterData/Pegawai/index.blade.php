@@ -25,7 +25,7 @@
         <div class="card mt-2">
             <div class="card-title">
                 <table class="table table-striped">
-                    <thead>
+                    <thead class="text-center">
                         <tr>
                             <th>#</th>
                             <th>ID Pegawai</th>
@@ -38,13 +38,13 @@
                     <tbody>
                         @forelse ($pegawai as $items)
                             <tr>
-                                <td>{{ $pegawai->firstItem() + $loop->iteration - 1 }}</td>
+                                <td class="text-center">{{ $pegawai->firstItem() + $loop->iteration - 1 }}</td>
                                 <td class="text-center">{{ $items->id_pegawai }}</td>
                                 <td>{{ $items->nama_pegawai }}</td>
                                 <td>{{ $items->jenis_kelamin }}</td>
                                 <td>{{ $items->alamat }}</td>
                                 <td>
-                                    <div class="row justify-content-center inline">
+                                    <div class="row justify-content-center">
                                         <a href="{{ route('Pegawai.edit', ['Pegawai' => $items->id]) }}" class="btn btn-primary">Ubah</a>
                                         <form class="mx-2" action="{{ route('Pegawai.destroy', ['Pegawai' => $items->id]) }}" method="POST">
                                             @method('DELETE')
