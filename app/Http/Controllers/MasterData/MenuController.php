@@ -43,7 +43,11 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $result = Menu::create($request->all());
+        if($result){
+            $msg = ['msg'=>'Berhasil bro'];
+        }
+        return Response()->json($msg);
     }
 
     /**

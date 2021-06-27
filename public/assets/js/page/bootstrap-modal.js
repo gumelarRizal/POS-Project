@@ -34,7 +34,6 @@ $("#modal-3").fireModal({
 
 $("#modal-4").fireModal({
     footerClass: 'bg-whitesmoke',
-    body: 'Add the <code>bg-whitesmoke</code> class to the <code>footerClass</code> option.',
     buttons: [{
         text: 'No Action!',
         class: 'btn btn-primary btn-shadow',
@@ -44,32 +43,41 @@ $("#modal-4").fireModal({
 
 $("#modal-5").fireModal({
     title: 'Add',
-    body: $("#modal-login-part"),
+    body: $("#modal-create-part"),
     footerClass: 'bg-whitesmoke',
     autoFocus: false,
     onFormSubmit: function (modal, e, form) {
         // Form Data
         let form_data = $(e.target).serialize();
         console.log(form_data)
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         // DO AJAX HERE
-        $.ajax({
-
-        })
-        let fake_ajax = setTimeout(function () {
-            form.stopProgress();
-            modal.find('.modal-body').prepend('<div class="alert alert-success alert-dismissible show fade"><div class="alert-body"><button class="close" data-dismiss="alert"><span>×</span></button>Data berhasil di simpan.</div></div>')
-
-            clearInterval(fake_ajax);
-        }, 1000);
-
-        e.preventDefault();
+        // $.ajax({
+        //     type:"POST",
+        //     url:"{{ url('/Menu')}}",
+        //     data : form_data,
+        //     success:function(data){
+            //     }
+            // })
+            let fake_ajax = setTimeout(function () {
+                        form.stopProgress();
+                        modal.find('.modal-body').prepend('<div class="alert alert-success alert-dismissible show fade"><div class="alert-body"><button class="close" data-dismiss="alert"><span>×</span></button>Data berhasil di simpan.</div></div>')
+                
+                    clearInterval(fake_ajax);
+                }, 1000);
+                
+                e.preventDefault();
     },
     shown: function (modal, form) {
         console.log(form)
     },
     buttons: [{
-        text: 'Login',
+        text: 'Save',
         submit: true,
         class: 'btn btn-primary btn-shadow',
         handler: function (modal) {}
