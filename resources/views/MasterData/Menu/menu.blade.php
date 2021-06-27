@@ -30,10 +30,11 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="text-left">
-                                        <a href="#" class="btn btn-success btn-sm modal-show" data-toggle="modal"
-                                            data-target="#modal-default" title="Tambah Data Siswa" id="modal-5"><i
-                                                class="fas fa-plus"></i>
-                                            Add</a>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#exampleModal">
+                                            <i class="fas fa-plus"></i>
+                                            Add
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -63,28 +64,63 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $no = 0;
+                                @endphp
                                 @foreach ($listMenu as $item)
+                                    @php
+                                        $no++;
+                                    @endphp
                                     <tr>
+                                        <td>{{ $no }}</td>
                                         <td>{{ $item->id_menu }}</td>
                                         <td>{{ $item->Nama_menu }}</td>
                                         <td>{{ $item->harga }}</td>
+                                        <td align="center">
+                                            <a class="btn bg-danger btn-sm">
+                                                <i class="fas fa-trash"> Hapus </i>
+                                            </a>
+                                            <a class="btn bg-warning btn-sm">
+                                                <i class="fas fa-edit"> Edit </i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
-                @include('MasterData.Menu.modalMenu')
             </div>
         </div>
     </div>
-@endsection
-@push('after-script')
-    <script>
-        $(document).ready(function() {
-            $("#table-1").DataTable({
-                searching: false,
+    @push('after-script')
+        <script>
+            $(document).ready(function() {
+                $("#table-1").DataTable({
+                    searching: false,
+                });
+
+                $("#saveChanges").click(function(e) {
+                    e.preventDefault();
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: "{{ route('Menu.store') }}",
+                        method: "post",
+                        data: $("#formMenu").serialize(),
+                        success: function(resp) {
+                            alert(resp.msg);
+                            $("#table-1").DataTable().data();
+                        }
+                    })
+                })
             });
-        });
-    </script>
-@endpush
+        </script>
+    @endpush
+@endsection
+@section('modal')
+    @include('MasterData.Menu.modalMenu')
+@endsection
