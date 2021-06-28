@@ -28,4 +28,5 @@ Route::get('/Pegawai/search', [PegawaiController::class, 'search'])->name('Pegaw
 Route::resource('Pegawai', 'App\Http\Controllers\MasterData\PegawaiController');
 
 Route::resource('Menu', 'App\Http\Controllers\MasterData\MenuController');
+Route::post('Menu/Read','App\Http\Controllers\MasterData\MenuController@read')->name('Menu.Read');
 

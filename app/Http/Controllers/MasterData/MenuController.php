@@ -5,6 +5,7 @@ namespace App\Http\Controllers\MasterData;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MasterData\Menu;
+use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
 {
@@ -23,6 +24,23 @@ class MenuController extends Controller
         $titleBreadcrump = 'Menu';
         $listMenu = Menu::all();
         return view('MasterData.Menu.menu',['titleBreadcrump'=>$titleBreadcrump,'listMenu'=>$listMenu]);
+    }
+    
+    public function read(Request $request){
+        
+        $where = "";
+        if($request->id_menu){
+            $where ="where id_menu = '".$request->id_menu."' and nama_menu = '".$request->nama_menu."'";
+        }
+        // dd($where);
+        $listMenu = DB::select("
+            Select * 
+            from mt_menu
+            ".$where." 
+            ");
+        // dd($listMenu);
+        $html = view('MasterData.Menu.menuList',compact('listMenu'))->render();
+        return $html;
     }
 
     /**
@@ -43,10 +61,21 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        $result = Menu::create($request->all());
-        if($result){
-            $msg = ['msg'=>'Berhasil bro'];
+        $msg = [];
+
+        if($request->id==""){
+            $result = Menu::create($request->all());
+            if($result){
+                $msg = ['msg'=>'Data Berhasil di Tambahkan'];
+            }
         }
+        else{  
+            $result = Menu::where('id',$request->id)->update($request->except(['_token']));
+            if($result){
+                $msg = ['msg'=>'Data Berhasil di Edit'];
+            }
+        }
+
         return Response()->json($msg);
     }
 

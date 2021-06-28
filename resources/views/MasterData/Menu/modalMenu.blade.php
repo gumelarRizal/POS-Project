@@ -11,23 +11,26 @@
             <div class="modal-body">
                 <form method="POST" action="javascript:void(0)" id="formMenu">
                     @csrf
+                    <input type="hidden" name="id" id="formId" value="">
                     <div class="form-group">
                         <label>Kode Menu</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Kode Menu" name="id_menu">
+                            <input type="text" class="form-control" placeholder="Kode Menu" name="id_menu"
+                                id="form-id_menu">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Nama Menu</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Nama Menu" name="nama_menu">
+                            <input type="text" class="form-control" placeholder="Nama Menu" name="nama_menu"
+                                id="form-nama_menu">
                             </>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Harga</label>
                         <div class="input-group">
-                            <input type="number" class="form-control" placeholder="Harga" name="harga">
+                            <input type="number" class="form-control" placeholder="Harga" name="harga" id="harga">
                             </>
                         </div>
                     </div>

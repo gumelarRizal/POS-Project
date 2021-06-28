@@ -11,26 +11,32 @@
                 </div>
                 <div class="card-body">
                     <div class="col-sm-12">
-                        <form action="">
+                        <form method="POST" action="javascript:void(0)" id="formSearch">
                             @csrf
                             <div class="row">
                                 <div class="col-sm-6">
                                     <label for="">Kode Menu</label>
                                     <div class="form-group">
-                                        <input type="text" name="" id="" class="form-control">
+                                        <input type="text" name="id_menu" id="id_menu" class="form-control">
+                                        <div class="invalid-feedback" id="feedbackIdmenu">
+
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="">Nama Menu Menu</label>
                                     <div class="form-group">
-                                        <input type="text" name="" id="" class="form-control">
+                                        <input type="text" name="nama_menu" id="nama_menu" class="form-control">
+                                        <div class="invalid-feedback" id="feedbackNamamenu">
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="text-left">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        <button type="button" id="addModal" class="btn btn-primary" data-toggle="modal"
                                             data-target="#exampleModal">
                                             <i class="fas fa-plus"></i>
                                             Add
@@ -39,9 +45,10 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="text-right">
-                                        <button class="btn btn-info btn-sm"><i class="fas fa-search" id="search"></i>
+                                        <button class="btn btn-info btn-sm" id="btnSearch"><i class="fas fa-search"
+                                                id="search"></i>
                                             Search</button>
-                                        <button class="btn btn-secondary btn-sm"><i class="fas fa-cycle"></i>
+                                        <button class="btn btn-secondary btn-sm" id="clearId"><i class="fas fa-cycle"></i>
                                             Clear</button>
                                     </div>
                                 </div>
@@ -49,45 +56,11 @@
                         </form>
                         <hr>
                     </div>
-                    <div class="col-sm-12">
-                        <table class="table table-striped dataTable no-footer" id="table-1" role="grid"
-                            aria-describedby="table-1_info">
-                            <thead>
-                                <tr>
-                                    <th class="text-center sorting_asc">
-                                        #
-                                    </th>
-                                    <th>ID Menu</th>
-                                    <th>Nama Menu</th>
-                                    <th>Harga Menu</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $no = 0;
-                                @endphp
-                                @foreach ($listMenu as $item)
-                                    @php
-                                        $no++;
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $no }}</td>
-                                        <td>{{ $item->id_menu }}</td>
-                                        <td>{{ $item->Nama_menu }}</td>
-                                        <td>{{ $item->harga }}</td>
-                                        <td align="center">
-                                            <a class="btn bg-danger btn-sm">
-                                                <i class="fas fa-trash"> Hapus </i>
-                                            </a>
-                                            <a class="btn bg-warning btn-sm">
-                                                <i class="fas fa-edit"> Edit </i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="col-sm-12" id="dataList">
+                        <div class="alert alert-primary" id="loader" style="display:none" role="alert">
+                            Mohon tunggu <i class="fas fa-spinner fa-pulse"></i>
+                        </div>
+                        {{-- @include('MasterData.Menu.menuList') --}}
                     </div>
                 </div>
             </div>
@@ -96,8 +69,60 @@
     @push('after-script')
         <script>
             $(document).ready(function() {
-                $("#table-1").DataTable({
-                    searching: false,
+                pageload();
+
+                $("#addModal").on("click", function() {
+                    $("#exampleModalLabel").html("Tambah Data Menu");
+                });
+
+                $("#btnSearch").click(function() {
+                    var flagErr = 0;
+                    var idMenu = $("#id_menu").val();
+                    var namaMenu = $("#nama_menu").val();
+                    if (!idMenu) {
+                        $("#id_menu").addClass("is-invalid");
+                        $("#feedbackIdmenu").html("Kolom Id Menu tidak boleh kosong");
+                        flagErr = 1
+                    }
+                    if (!idMenu) {
+                        $("#nama_menu").addClass("is-invalid");
+                        $("#feedbackNamamenu").html("Kolom Nama Menu tidak boleh kosong");
+                        flagErr = 1
+                    }
+                    if (flagErr == 0) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            method: "post",
+                            url: "{{ route('Menu.Read') }}",
+                            data: $("#formSearch").serialize(),
+                            dataType: "html",
+                            beforeSend: function() {
+                                $('#loader').fadeIn('slow');
+                            },
+                            success: function(response) {
+                                $('#loader').fadeOut('slow');
+                                $('#dataList').html(response);
+                                $("#id_menu").removeClass("is-invalid");
+                                $("#nama_menu").removeClass("is-invalid");
+                                $("#table-1").DataTable({
+                                    searching: false,
+                                });
+                            }
+                        });
+                    }
+                });
+
+                $("#clearId").click(function(e) {
+                    e.preventDefault();
+                    $("#id_menu").val("");
+                    $("#nama_menu").val("");
+                    $("#id_menu").removeClass("is-invalid");
+                    $("#nama_menu").removeClass("is-invalid");
+                    pageload();
                 });
 
                 $("#saveChanges").click(function(e) {
@@ -107,17 +132,57 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
+                    console.log($("#formMenu").serialize());
                     $.ajax({
                         url: "{{ route('Menu.store') }}",
                         method: "post",
                         data: $("#formMenu").serialize(),
                         success: function(resp) {
-                            alert(resp.msg);
-                            $("#table-1").DataTable().data();
+                            swal("Berhasil", resp.msg, "success");
+                            resetModal()
+                            $("#exampleModal").modal("hide");
+                            pageload();
                         }
                     })
                 })
             });
+
+            function getEdit(id, id_menu, nama, harga) {
+                $("#exampleModal").modal("show");
+                $("#exampleModalLabel").html("Edit Data Menu");
+                $("#formId").val(id);
+                $("#form-id_menu").val(id_menu);
+                $("#form-nama_menu").val(nama);
+                $("#harga").val(harga);
+            }
+
+            function resetModal() {
+                $("#formId").val("");
+                $("#form-id_menu").val("");
+                $("#form-nama_menu").val("");
+                $("#harga").val("");
+            }
+
+            function pageload() {
+                $.ajax({
+                    method: "post",
+                    url: "{{ route('Menu.Read') }}",
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: "html",
+                    beforeSend: function() {
+                        $('#loader').fadeIn('slow');
+                    },
+                    success: function(response) {
+                        $('#loader').fadeOut('slow');
+                        $('#dataList').html(response);
+                        $("#table-1").DataTable({
+                            searching: false,
+                        });
+                    }
+                });
+            }
         </script>
     @endpush
 @endsection
