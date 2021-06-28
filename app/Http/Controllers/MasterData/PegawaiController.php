@@ -116,7 +116,8 @@ class PegawaiController extends Controller
         $pegawai = Pegawai::where('nama_pegawai', 'LIKE',"%".$request->cari."%")
                             ->orWhere('id_pegawai', 'LIKE', "%".$request->cari."%")
                             ->paginate(10);
-        return view('MasterData.Pegawai.index', ['pegawai' => $pegawai]);
+        $titleBreadcrump = "Pegawai";
+        return view('MasterData.Pegawai.index', ['pegawai' => $pegawai, 'titleBreadcrump' => $titleBreadcrump]);
         
     }
 }
