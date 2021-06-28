@@ -29,4 +29,18 @@ Route::resource('Pegawai', 'App\Http\Controllers\MasterData\PegawaiController');
 
 Route::resource('Menu', 'App\Http\Controllers\MasterData\MenuController');
 Route::post('Menu/Read','App\Http\Controllers\MasterData\MenuController@read')->name('Menu.Read');
-
+Route::get('/COA', function(){
+    return "COA";
+})->name('COA.index');
+Route::get('/Penggajian', function(){
+    return "COA";
+})->name('Penggajian.index');
+Route::get('/Laporan', function(){
+    return "COA";
+})->name('Laporan.index');
+Route::get('/Checkout', function(){
+    return "COA";
+})->name('Checkout.index');
+Route::get('/Jurnal', function(){
+    return "COA";
+})->name('Jurnal.index');
