@@ -32,7 +32,8 @@ class PegawaiController extends Controller
      */
     public function create()
     {
-        return view('MasterData.Pegawai.create');
+        $titleBreadcrump = "Edit Pegawai";
+        return view('MasterData.Pegawai.create', ['titleBreadcrump' => $titleBreadcrump]);
     }
 
     /**
@@ -53,7 +54,8 @@ class PegawaiController extends Controller
         ]);
 
         Pegawai::create($validasi);        
-        return redirect()->route('Pegawai.index')->with('success', "Berhasil menambahkan data {$validasi['nama_pegawai']}");
+        $titleBreadcrump = "Pegawai";
+        return redirect()->route('Pegawai.index', ['titleBreadcrump' => $titleBreadcrump])->with('success', "Berhasil menambahkan data {$validasi['nama_pegawai']}");
     }
 
     /**
@@ -76,7 +78,8 @@ class PegawaiController extends Controller
     public function edit($id)
     {
         $pegawai = Pegawai::find($id);
-        return view('MasterData.Pegawai.edit', ['pegawai' => $pegawai]);
+        $titleBreadcrump = "Edit Pegawai";
+        return view('MasterData.Pegawai.edit', ['pegawai' => $pegawai, 'titleBreadcrump' => $titleBreadcrump]);
     }
 
     /**
@@ -97,7 +100,8 @@ class PegawaiController extends Controller
         ]);
 
         Pegawai::where('id', $id)->update($validasi);
-        return redirect()->route('Pegawai.index')->with('success', "Berhasil memperbaharui data {$validasi['nama_pegawai']}");
+        $titleBreadcrump = "Edit Pegawai";
+        return redirect()->route('Pegawai.index', ['titleBreadcrump' => $titleBreadcrump])->with('success', "Berhasil memperbaharui data {$validasi['nama_pegawai']}");
     }
 
     /**
@@ -106,10 +110,11 @@ class PegawaiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pegawai $pegawai)
     {
+        $id = $pegawai->id;
         Pegawai::where('id', $id)->delete();
-        return redirect()->route('Pegawai.index')->with('success', "Berhasil menghapus data");
+        return redirect()->route('Pegawai.index')->with('success', "Berhasil menghapus data $pegawai->nama!");
     }
 
     public function search(Request $request){
