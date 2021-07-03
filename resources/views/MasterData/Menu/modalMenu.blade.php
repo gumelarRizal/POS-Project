@@ -13,25 +13,66 @@
                     @csrf
                     <input type="hidden" name="id" id="formId" value="">
                     <div class="form-group">
-                        <label>Kode Menu</label>
+                        <label>Kode Barang</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Kode Menu" name="id_menu"
-                                id="form-id_menu">
+                            <input type="text" class="form-control" placeholder="Kode Barang" name="id_barang"
+                                id="form-id_barang">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Nama Menu</label>
+                        <label>Kategori Barang</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Nama Menu" name="nama_menu"
-                                id="form-nama_menu">
-                            </>
+                            <select name="id_kategori_barang" id="form-id_kategori_barang" class="form-control">
+                                <option value="" selected disabled>--Pilih--</option>
+                                @foreach ($dropDownKtgBarang as $item)
+                                    <option value="{{ $item->id_kategori_barang }}">
+                                        {{ $item->nama_kategori_barang }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Harga</label>
+                        <label>Nama Barang</label>
                         <div class="input-group">
-                            <input type="number" class="form-control" placeholder="Harga" name="harga" id="harga">
-                            </>
+                            <input type="text" class="form-control" placeholder="Nama Barang" name="nama_barang"
+                                id="form-nama_barang">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Harga</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-dollar-sign"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control number-mask" placeholder="00.0" name="harga"
+                                        id="harga" onkeypress="validatenumber(event)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Stok</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-boxes"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control number-mask" placeholder="00.0" name="stok"
+                                        id="stok" onkeypress="validatenumber(event)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Satuan</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Satuan" name="satuan" id="satuan">
                         </div>
                     </div>
                 </form>

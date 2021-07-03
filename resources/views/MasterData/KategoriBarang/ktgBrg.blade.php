@@ -1,13 +1,13 @@
 @extends('layouts.MainLayouts')
 @section('title')
-    <h1>{{ __('Master Data Menu') }}</h1>
+    <h1>{{ __('Master Kategori Barang') }}</h1>
 @endsection
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>{{ __('List Data Menu') }}</h4>
+                    <h4>{{ __('List Data Kategori Barang') }}</h4>
                 </div>
                 <div class="card-body">
                     <div class="col-sm-12">
@@ -15,19 +15,21 @@
                             @csrf
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <label for="">Kode Menu</label>
+                                    <label for="">Kode Kategori Barang</label>
                                     <div class="form-group">
-                                        <input type="text" name="id_barang" id="id_barang" class="form-control">
-                                        <div class="invalid-feedback" id="feedbackIdmenu">
+                                        <input type="text" name="id_kategori_barang" id="id_kategori_barang"
+                                            class="form-control">
+                                        <div class="invalid-feedback" id="feedbackIdktgBrg">
 
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="">Nama Menu Menu</label>
+                                    <label for="">Nama Kategori Barang</label>
                                     <div class="form-group">
-                                        <input type="text" name="nama_barang" id="nama_barang" class="form-control">
-                                        <div class="invalid-feedback" id="feedbackNamamenu">
+                                        <input type="text" name="nama_kategori_barang" id="nama_kategori_barang"
+                                            class="form-control">
+                                        <div class="invalid-feedback" id="feedbackNmKtgBrg">
 
                                         </div>
                                     </div>
@@ -36,8 +38,8 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="text-left">
-                                        <button type="button" id="addModal" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#exampleModal">
+                                        <button type="button" id="addModalKtgBrg" class="btn btn-primary"
+                                            data-toggle="modal" data-target="#ktgBrgModal">
                                             <i class="fas fa-plus"></i>
                                             Add
                                         </button>
@@ -70,24 +72,23 @@
         <script>
             $(document).ready(function() {
                 pageload();
-                set_mask2();
 
-                $("#addModal").on("click", function() {
-                    $("#exampleModalLabel").html("Tambah Data Barang");
+                $("#addModalKtgBrg").on("click", function() {
+                    $("#ktgBrgModalLabel").html("Tambah Data Kategori Barang");
                 });
 
                 $("#btnSearch").click(function() {
                     var flagErr = 0;
-                    var idMenu = $("#id_barang").val();
-                    var namaMenu = $("#nama_barang").val();
+                    var idMenu = $("#id_kategori_barang").val();
+                    var namaMenu = $("#nama_kategori_barang").val();
                     if (!idMenu) {
-                        $("#id_barang").addClass("is-invalid");
-                        $("#feedbackIdmenu").html("Kolom Id Menu tidak boleh kosong");
+                        $("#id_kategori_barang").addClass("is-invalid");
+                        $("#feedbackIdktgBrg").html("Kolom Kode Kategori Barang tidak boleh kosong");
                         flagErr = 1
                     }
                     if (!idMenu) {
-                        $("#nama_barang").addClass("is-invalid");
-                        $("#feedbackNamamenu").html("Kolom Nama Menu tidak boleh kosong");
+                        $("#nama_kategori_barang").addClass("is-invalid");
+                        $("#feedbackNmKtgBrg").html("Kolom Nama Kategori Barang tidak boleh kosong");
                         flagErr = 1
                     }
                     if (flagErr == 0) {
@@ -98,7 +99,7 @@
                         });
                         $.ajax({
                             method: "post",
-                            url: "{{ route('Menu.Read') }}",
+                            url: "{{ route('KtgBrg.Read') }}",
                             data: $("#formSearch").serialize(),
                             dataType: "html",
                             beforeSend: function() {
@@ -107,8 +108,8 @@
                             success: function(response) {
                                 $('#loader').fadeOut('slow');
                                 $('#dataList').html(response);
-                                $("#id_barang").removeClass("is-invalid");
-                                $("#nama_barang").removeClass("is-invalid");
+                                $("#id_kategori_barang").removeClass("is-invalid");
+                                $("#nama_kategori_barang").removeClass("is-invalid");
                                 $("#table-1").DataTable({
                                     searching: false,
                                 });
@@ -119,10 +120,10 @@
 
                 $("#clearId").click(function(e) {
                     e.preventDefault();
-                    $("#id_barang").val("");
-                    $("#nama_barang").val("");
-                    $("#id_barang").removeClass("is-invalid");
-                    $("#nama_barang").removeClass("is-invalid");
+                    $("#id_kategori_barang").val("");
+                    $("#nama_kategori_barang").val("");
+                    $("#id_kategori_barang").removeClass("is-invalid");
+                    $("#nama_kategori_barang").removeClass("is-invalid");
                     pageload();
                 });
 
@@ -133,35 +134,28 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    var harga = $("#harga").val(),
-                        stok = $("#stok").val(),
-                        hargaMask = harga.replace(/\./g, ""),
-                        stokMask = stok.replace(/\./g, ""),
-                        formSerialize = $("#formMenu").serialize();
-                    formSerialize = formSerialize + "&" + "hargaMask=" + hargaMask;
-                    formSerialize = formSerialize + "&" + "stokMask=" + stokMask;
+                    var formSerialize = $("#formMenu").serialize();
                     console.log(formSerialize);
                     $.ajax({
-                        url: "{{ route('Menu.store') }}",
+                        url: "{{ route('KtgBrg.Store') }}",
                         method: "post",
                         data: formSerialize,
                         success: function(resp) {
                             swal("Berhasil", resp.msg, "success");
                             resetModal()
-                            $("#exampleModal").modal("hide");
+                            $("#ktgBrgModal").modal("hide");
                             pageload();
                         }
                     })
                 })
             });
 
-            function getEdit(id, id_barang, nama, harga, stok, satuan, ktg) {
-                $("#exampleModal").modal("show");
-                $("#exampleModalLabel").html("Edit Data Barang");
+            function getEdit(id, id_kategori_barang, nama) {
+                $("#ktgBrgModal").modal("show");
+                $("#ktgBrgModalLabel").html("Edit Data Barang");
                 $("#formId").val(id);
-                $("#form-id_barang").val(id_barang);
-                $("#form-id_kategori_barang").val(ktg).attr('selected', 'selected');
-                $("#form-nama_barang").val(nama);
+                $("#form-id_kategori_barang").val(id_kategori_barang);
+                $("#form-nama_kategori_barang").val(nama);
                 $("#harga").val(harga);
                 $("#stok").val(stok);
                 $("#satuan").val(satuan);
@@ -169,9 +163,8 @@
 
             function resetModal() {
                 $("#formId").val("");
-                $("#form-id_barang").val("");
-                $("#form-nama_barang").val("");
                 $("#form-id_kategori_barang").val("");
+                $("#form-nama_kategori_barang").val("");
                 $("#harga").val("");
                 $("#stok").val("");
                 $("#satuan").val("");
@@ -180,7 +173,7 @@
             function pageload() {
                 $.ajax({
                     method: "post",
-                    url: "{{ route('Menu.Read') }}",
+                    url: "{{ route('KtgBrg.Read') }}",
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
@@ -191,7 +184,7 @@
                     success: function(response) {
                         $('#loader').fadeOut('slow');
                         $('#dataList').html(response);
-                        $("#table-1").DataTable({
+                        $("#table-ktgBrg").DataTable({
                             searching: false,
                         });
                     }
@@ -201,5 +194,5 @@
     @endpush
 @endsection
 @section('modal')
-    @include('MasterData.Menu.modalMenu')
+    @include('MasterData.KategoriBarang.modalKtgBrg')
 @endsection

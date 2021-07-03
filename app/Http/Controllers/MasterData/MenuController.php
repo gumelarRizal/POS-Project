@@ -5,6 +5,7 @@ namespace App\Http\Controllers\MasterData;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MasterData\Menu;
+use App\Models\MasterData\KategoriBarang;
 use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
@@ -21,25 +22,36 @@ class MenuController extends Controller
     public function index()
     {
         $kode_kelas = '';
-        $titleBreadcrump = 'Menu';
-        $listMenu = Menu::all();
-        return view('MasterData.Menu.menu',['titleBreadcrump'=>$titleBreadcrump,'listMenu'=>$listMenu]);
+        $titleBreadcrump = 'Barang';
+        $dropDownKtgBarang = KategoriBarang::all();
+        return view('MasterData.Menu.menu',['titleBreadcrump'=>$titleBreadcrump,'dropDownKtgBarang'=>$dropDownKtgBarang]);
     }
     
     public function read(Request $request){
         
         $where = "";
-        if($request->id_menu){
-            $where ="where id_menu like '%".$request->id_menu."%' and nama_menu like '%".$request->nama_menu."%'";
+        if($request->id_barang){
+            $where ="and a.id_barang like '%".$request->id_barang."%' and a.nama_barang like '%".$request->nama_barang."%'";
         }
         // dd($where);
-        $listMenu = DB::select("
-            Select * 
-            from mt_menu
-            ".$where." 
+        $listbarang = DB::select("
+            Select 
+                a.id,
+                a.id_barang,
+                a.nama_barang,
+                a.harga,
+                a.satuan,
+                a.stok,
+                b.id_kategori_barang,
+                b.nama_kategori_barang 
+            from mt_barang a
+            join mt_kategori_barang b
+                on a.id_kategori_barang = b.id_kategori_barang
+            where 1=1 
+                ".$where." 
             ");
         // dd($listMenu);
-        $html = view('MasterData.Menu.menuList',compact('listMenu'))->render();
+        $html = view('MasterData.Menu.menuList',compact('listbarang'))->render();
         return $html;
     }
 
@@ -64,13 +76,27 @@ class MenuController extends Controller
         $msg = [];
 
         if($request->id==""){
-            $result = Menu::create($request->all());
+            $result = Menu::create([
+                'id_barang' => $request->id_barang,
+                'id_kategori_barang' => $request->id_kategori_barang,
+                'nama_barang' => $request->nama_barang,
+                'harga' => $request->hargaMask,
+                'stok' => $request->stokMask,
+                'satuan' => $request->satuan
+            ]);
             if($result){
                 $msg = ['msg'=>'Data Berhasil di Tambahkan'];
             }
         }
         else{  
-            $result = Menu::where('id',$request->id)->update($request->except(['_token']));
+            $result = Menu::where('id',$request->id)->update([
+                'id_barang' => $request->id_barang,
+                'id_kategori_barang' => $request->id_kategori_barang,
+                'nama_barang' => $request->nama_barang,
+                'harga' => $request->hargaMask,
+                'stok' => $request->stokMask,
+                'satuan' => $request->satuan
+            ]);
             if($result){
                 $msg = ['msg'=>'Data Berhasil di Edit'];
             }

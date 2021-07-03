@@ -5,18 +5,14 @@ namespace App\Models\MasterData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class KategoriBarang extends Model
 {
     use HasFactory;
-    protected $table = 'mt_barang';
+    protected $table = 'mt_kategori_barang';
     protected $fillable = [
         'id',
-        'id_barang',
         'id_kategori_barang',
-        'nama_barang',
-        'stok',
-        'harga',
-        'satuan',
-        'created_at',
+        'nama_kategori_barang',
+        'CREATED_BY'
     ];
 }

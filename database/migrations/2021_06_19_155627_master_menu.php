@@ -13,12 +13,14 @@ class MasterMenu extends Migration
      */
     public function up()
     {
-        Schema::create('mt_menu', function (Blueprint $table) {
+        Schema::create('mt_barang', function (Blueprint $table) {
             $table->id();
-            $table->string('id_menu')->unique();
-            $table->integer('id_kategori_menu');
-            $table->string('nama_menu');
+            $table->string('id_barang')->unique();
+            $table->integer('id_kategori_barang');
+            $table->string('nama_barang');
             $table->integer('harga');
+            $table->integer('stok');
+            $table->string('satuan');
             $table->timestamps();
         });
     }
