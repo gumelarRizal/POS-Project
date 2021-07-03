@@ -30,7 +30,7 @@ class MenuController extends Controller
         
         $where = "";
         if($request->id_menu){
-            $where ="where id_menu = '".$request->id_menu."' and nama_menu = '".$request->nama_menu."'";
+            $where ="where id_menu like '%".$request->id_menu."%' and nama_menu like '%".$request->nama_menu."%'";
         }
         // dd($where);
         $listMenu = DB::select("

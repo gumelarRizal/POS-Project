@@ -14,7 +14,7 @@ use App\Http\Controllers\MasterData\PegawaiController;
 |
 */
 
-Route::get('/','App\Http\Controllers\Auth\LoginController@showLoginForm');
+Route::get('/','App\Http\Controllers\Auth\LoginController@showLoginForm')->name('index');
 
 Route::get('/FormRegister',function(){
     return view('auth.registerForm');
