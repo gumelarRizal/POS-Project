@@ -23,7 +23,7 @@ Route::get('/FormRegister',function(){
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::post('/Pegawai/delete', [PegawaiController::class, 'delete'])->name('Pegawai.delete');
 Route::get('/Pegawai/search', [PegawaiController::class, 'search'])->name('Pegawai.search');
 Route::resource('Pegawai', 'App\Http\Controllers\MasterData\PegawaiController');
 
