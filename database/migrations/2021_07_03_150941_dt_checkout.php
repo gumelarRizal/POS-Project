@@ -15,10 +15,11 @@ class DtCheckout extends Migration
     {
         Schema::create('dt_checkout',function(Blueprint $table){
             $table->increments('id');
-            $table->string('id_detail_checkout')->unique();
+            $table->string('id_dt_checkout')->unique();
             $table->string('id_checkout');
             $table->string('id_barang');
             $table->string('id_kategori_barang');
+            $table->integer('subtotal');
             $table->integer('qty');
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ class DtCheckout extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('dt_checkout');
     }
 }

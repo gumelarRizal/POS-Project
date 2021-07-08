@@ -5,16 +5,18 @@ namespace App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class checkOutPesanan extends Model
+class detailCheckoutPesanan extends Model
 {
     use HasFactory;
-    protected $table = 'tr_checkout';
+    protected $table = 'dt_checkout';
     protected $fillable = [
         'id',
+        'id_dt_checkout',
         'id_checkout',
+        'id_barang',
+        'id_kategori_barang',
         'subtotal',
-        'id_user',
-        'tgl_transaksi',
+        'qty',
         'created_at',
     ];
 }

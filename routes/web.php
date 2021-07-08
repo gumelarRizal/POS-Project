@@ -45,6 +45,7 @@ Route::get('/Laporan', function(){
 })->name('Laporan.index');
 
 Route::get('/Checkout','App\Http\Controllers\Transaction\checkOutPesananController@index')->name('Checkout.index');
+Route::Post('/Checkout/Selesai','App\Http\Controllers\Transaction\checkOutPesananController@selesaiPesan')->name('Checkout.selesaiPesan');
 Route::post('/Checkout','App\Http\Controllers\Transaction\checkOutPesananController@getParentKtgBrg')->name('Checkout.getParentBarang');
 
 Route::get('/Jurnal', function(){
