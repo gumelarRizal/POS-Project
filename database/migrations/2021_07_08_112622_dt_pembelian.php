@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DtCheckout extends Migration
+class DtPembelian extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class DtCheckout extends Migration
      */
     public function up()
     {
-        Schema::create('dt_checkout',function(Blueprint $table){
+        Schema::create('dt_pembelian',function(Blueprint $table){
             $table->increments('id');
-            $table->string('id_dt_checkout')->unique();
-            $table->string('id_checkout');
+            $table->string('id_dt_pembelian')->unique();
+            $table->string('id_pembelian');
             $table->string('id_barang');
             $table->string('id_kategori_barang');
             $table->integer('subtotal');
@@ -32,6 +32,6 @@ class DtCheckout extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dt_checkout');
+        Schema::dropIfExists('dt_pembelian');
     }
 }

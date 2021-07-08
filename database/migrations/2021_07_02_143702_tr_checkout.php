@@ -16,8 +16,7 @@ class TrCheckout extends Migration
         Schema::create('tr_checkout',function(Blueprint $table){
             $table->increments('id');
             $table->string('id_checkout')->unique();
-            $table->string('id_detail_checkout');
-            $table->integer('subtotal');
+            $table->integer('total');
             $table->integer('id_user');
             $table->datetime('tgl_transaksi');
             $table->timestamps();
