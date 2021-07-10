@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MasterData\PegawaiController;
-
+use App\Http\Controllers\Transaction\PembelianController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -55,6 +55,6 @@ Route::get('/Jurnal', function () {
     return "COA";
 })->name('Jurnal.index');
 
-Route::get('/Pembelian', function () {
-    return "COA";
-})->name('Pembelian.index');
+Route::get('/Pembelian', [PembelianController::class, 'index'])->name('Pembelian.index');
+Route::post('/Pembelian', [PembelianController::class, 'barang'])->name('Pembelian.barang');
+Route::post('/Pembelian/Simpan', [PembelianController::class, 'simpan'])->name('Pembelian.simpan');
