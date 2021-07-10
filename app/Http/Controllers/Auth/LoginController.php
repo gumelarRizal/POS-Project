@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
@@ -39,10 +40,18 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->hasRole('admin')) {
+            return Redirect()->route('Checkout.index');
+        }
+        return redirect()->route('home');
+    }
+
     public function login(Request $request)
     {
-        $this->validate($request,[
-            'username' => 'required|string', 
+        $this->validate($request, [
+            'username' => 'required|string',
             'password' => 'required|string|min:6'
         ]);
 
@@ -53,7 +62,7 @@ class LoginController extends Controller
         ];
 
         if (auth()->attempt($login)) {
-            return redirect()->route('home');
+            return $this->authenticated($request, auth()->user());
         }
 
         return redirect()->route('index')->with(['error' => 'Email/Password salah!']);

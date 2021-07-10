@@ -233,6 +233,7 @@
                             dataType: 'JSON',
                             success: function(response) {
                                 //alert(response.msg);
+                                arrVal = [];
                                 swal(response.msg, {
                                     icon: "success",
                                 });

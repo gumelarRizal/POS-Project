@@ -12,7 +12,7 @@ class checkOutPesanan extends Model
     protected $fillable = [
         'id',
         'id_checkout',
-        'subtotal',
+        'total',
         'id_user',
         'tgl_transaksi',
         'created_at',

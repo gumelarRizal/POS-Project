@@ -24,7 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // dd(auth()->user()->hasRole('user'));
         $titleBreadcrump = 'Dashboard';
-        return view('home',['titleBreadcrump'=>$titleBreadcrump]);
+        return view('home', ['titleBreadcrump' => $titleBreadcrump]);
     }
 }
