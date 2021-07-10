@@ -54,3 +54,4 @@ Route::get('/Jurnal', function(){
 
 Route::get('/Pembelian', [PembelianController::class, 'index'])->name('Pembelian.index');
 Route::post('/Pembelian', [PembelianController::class, 'barang'])->name('Pembelian.barang');
+Route::post('/Pembelian/Simpan', [PembelianController::class, 'simpan'])->name('Pembelian.simpan');
