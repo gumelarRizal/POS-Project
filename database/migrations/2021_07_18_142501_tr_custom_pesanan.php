@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MtKategoriBarang extends Migration
+class TrCustomPesanan extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class MtKategoriBarang extends Migration
      */
     public function up()
     {
-        Schema::create('mt_kategori_barang',function(Blueprint $table){
+        Schema::create('tr_customPesanan',function(Blueprint $table){
             $table->increments('id');
-            $table->string('id_kategori_barang')->unique();
-            $table->string('nama_kategori_barang');
-            $table->string('CREATED_BY');
+            $table->string('id_customPesanan')->unique();
+            $table->integer('jumlahByr');
+            $table->integer('total');
+            $table->integer('id_user');
+            $table->char('status',1);
+            $table->datetime('tgl_transaksi');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ class MtKategoriBarang extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mt_kategori_barang');
+        Schema::dropIfExists('tr_customPesanan');
     }
 }

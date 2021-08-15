@@ -52,7 +52,7 @@ class KategoriBarangController extends Controller
             }
         }
         else{  
-            $result = MeKategoriBarangnu::where('id',$request->id)->update([
+            $result = KategoriBarang::where('id',$request->id)->update([
                 'id_kategori_barang' => $request->id_kategori_barang,
                 'nama_kategori_barang' => $request->nama_kategori_barang,
             ]);

@@ -74,7 +74,6 @@ class MenuController extends Controller
     public function store(Request $request)
     {
         $msg = [];
-
         if($request->id==""){
             $result = Menu::create([
                 'id_barang' => $request->id_barang,

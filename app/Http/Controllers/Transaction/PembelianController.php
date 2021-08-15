@@ -11,6 +11,10 @@ use App\Models\Transaction\PembelianDetail;
 
 class PembelianController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
         $kategori = KategoriBarang::select('id_kategori_barang', 'nama_kategori_barang')->orderBy('nama_kategori_barang')->get();
         return view('Transaction.Pembelian.index', ['kategori' => $kategori]);

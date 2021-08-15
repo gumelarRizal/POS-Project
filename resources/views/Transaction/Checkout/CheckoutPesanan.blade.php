@@ -40,6 +40,21 @@
 
                                 </div>
                             </div>
+                            {{-- <label for="">Diskon *optional</label>
+                            <div class="form-group" id="form-idBrg">
+                                <p id="loadingNmBrg" style="display: none">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Loading...
+                                </p>
+                                <select name="" id="" class="form-control">
+                                    <option value="">--pilih diskon--</option>
+                                    <option value="">20%</option>
+                                    <option value="">--pilih diskon--</option>
+                                </select>
+                                <div class="invalid-feedback" id="feedbackNamamenu">
+
+                                </div>
+                            </div> --}}
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="">Harga Jual</label>
@@ -59,6 +74,12 @@
                                         </div>
                                     </div>
 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Diskon</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="disc" id="disc">
                                 </div>
                             </div>
                             <div class="row">
@@ -86,13 +107,14 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped dataTable no-footer" id="tableDetail" role="grid">
+                    <table class="table table-striped table-hover" id="tableDetail" role="grid">
                         <thead>
                             <tr>
-                                <th>Kategori Barang</th>
-                                <th>Nama Barang</th>
+                                <th>Kategori </th>
+                                <th>Barang</th>
                                 <th>Qty</th>
-                                <th>Harga Barang</th>
+                                <th>Harga</th>
+                                <th>Diskon</th>
                                 <th>Subtotal</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -102,15 +124,28 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td class="left">
+                                <td colspan="5" class="text-right text-uppercase font-weight-bold">
                                     <strong>Total Checkout</strong>
                                 </td>
-                                <td class="text-right" id="subtotal1"></td>
+                                <td class="text-right font-weight-bold" id="subtotal1"></td>
                                 <td></td>
                             </tr>
+                            {{-- <tr>
+                                <td colspan="5" class="text-right text-uppercase font-weight-bold">
+                                    <strong>Bayar</strong>
+                                </td>
+                                <td class="text-right font-weight-bold"><input type="text" class="form-control" id="bayar"
+                                        onkeypress="validatenumber(event)">
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="text-right text-uppercase font-weight-bold">
+                                    <strong>Kembalian</strong>
+                                </td>
+                                <td class="text-right font-weight-bold" id="totalBel"></td>
+                                <td></td>
+                            </tr> --}}
                         </tfoot>
                     </table>
 
@@ -123,8 +158,9 @@
 
                         </div>
                     </div><br>
-                    <div class="col-md-12">
-                        <button class="btn btn-primary col-sm-12" id="selesaiPesan">
+                    <div class="col-md-12 text-right">
+                        <a href="{{ route('Checkout.cetakStruk') }}" class="btn btn-info" target="_blank">Cetak Struk</a>
+                        <button class="btn btn-primary" id="selesaiPesan">
                             selesai
                         </button>
                     </div>
@@ -137,10 +173,18 @@
     <script>
         $(document).ready(function() {
             //add data detail
-            var arrVal = [];
+            var arrVal = [],
+                total = 0;
             if (arrVal.length == 0) {
                 $("#selesaiPesan").prop("disabled", true);
             }
+
+            // bayar
+            // $("#bayar").on("input", function() {
+            //     var val = $(this).val(),
+            //         totalCheck = total;
+            //     $("#totalBel").html(val - totalCheck);
+            // });
 
             // $("#btnAdd").click(addValObj);
             $("#btnAdd").click(function(e) {
@@ -150,56 +194,70 @@
                     nmKtgObj = $("#id_kategori_barang").find(':selected').attr("data-ktg"),
                     brgObj = $("#id_barang").val(),
                     nmBrgObj = $("#id_barang").find(':selected').attr("data-nmbrg"),
-                    hrgObj = $("#hargaJual").val(),
+                    hrgObj = $("#hargaJual").val().replace('.', ''),
                     qtyObj = $("#qtyJual").val(),
-                    subtotal = hrgObj * qtyObj,
-                    objVal = new initialObj(ktgBrgObj, nmKtgObj, brgObj, nmBrgObj, hrgObj, qtyObj,
-                        subtotal),
-                    trTd = "",
-                    subtotal = 0;
-                arrVal.push(objVal);
-                $.each(arrVal, function(indexInArray, valueOfElement) {
-                    trTd += "<tr>" + "<td>" + valueOfElement.nmKtg + "</td>" +
-                        "<td>" + valueOfElement.nmBrg + "</td>" +
-                        "<td class='text-right'>" + valueOfElement.qty + "</td>" +
-                        "<td class='text-right'>" + valueOfElement.hrg + "</td>" +
-                        "<td class='text-right'>" + valueOfElement.sbtl + "</td>" +
-                        "<td><a href='#' class='btn bg-danger btn-sm deleteRow' data-indexArr='" +
-                        indexInArray + "'><i class='fas fa-trash'> Hapus </i></a></td>" +
-                        "</tr>";
-                    $("#tableDetail tbody").html(trTd);
-                    subtotal += valueOfElement.sbtl;
-                    $("#subtotal1").html(subtotal);
-                });
-                // console.log(subtotal)
-                $("#selesaiPesan").prop("disabled", false);
-                console.log(arrVal);
+                    discObj = $('#disc').val(),
+                    subtotal = (hrgObj * qtyObj) - discObj;
+                if (ktgBrgObj == "" || brgObj == "" || hrgObj == "" || qtyObj == "") {
+                    //alert("kosong nih boss!!");
+                    swal({
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: 'Input tidak boleh kosong!'
+                    });
+                } else {
+                    var objVal = new initialObj(ktgBrgObj, nmKtgObj, brgObj, nmBrgObj, hrgObj, qtyObj,
+                            discObj, subtotal),
+                        trTd = "",
+                        subtotal = 0;
+
+                    arrVal.push(objVal);
+                    $.each(arrVal, function(indexInArray, valueOfElement) {
+                        trTd += "<tr>" + "<td>" + valueOfElement.nmKtg + "</td>" +
+                            "<td>" + valueOfElement.nmBrg + "</td>" +
+                            "<td class='text-right'>" + valueOfElement.qty + "</td>" +
+                            "<td class='text-right'>" + addCommas(valueOfElement.hrg) + "</td>" +
+                            "<td class='text-right'>" + addCommas(valueOfElement.disc) + "</td>" +
+                            "<td class='text-right'>" + addCommas(valueOfElement.sbtl) + "</td>" +
+                            "<td><a href='#' class='btn bg-danger btn-sm deleteRow' data-indexArr='" +
+                            indexInArray + "'><i class='fas fa-trash'> Hapus </i></a></td>" +
+                            "</tr>";
+                        $("#tableDetail tbody").html(trTd);
+                        subtotal += valueOfElement.sbtl;
+                        $("#subtotal1").html(addCommas(subtotal));
+                    });
+                    total = subtotal;
+                    $("#selesaiPesan").prop("disabled", false);
+                    console.log(arrVal);
+                }
             });
 
             //delete data
             $("#tableDetail tbody").on("click", ".deleteRow", function() {
                 var indexArr = $(this).attr("data-indexArr"),
-                    subtotal = 0,
-                    trTd = "";
+                    trTd = "",
+                    subtotal = 0;
                 arrVal.splice(indexArr, 1);
                 $.each(arrVal, function(indexInArray, valueOfElement) {
                     trTd += "<tr>" +
                         "<td>" + valueOfElement.nmKtg + "</td>" +
                         "<td>" + valueOfElement.nmBrg + "</td>" +
                         "<td class='text-right'>" + valueOfElement.qty + "</td>" +
-                        "<td class='text-right'>" + valueOfElement.hrg + "</td>" +
-                        "<td class='text-right'>" + valueOfElement.sbtl + "</td>" +
+                        "<td class='text-right'>" + addCommas(valueOfElement.hrg) + "</td>" +
+                        "<td class='text-right'>" + addCommas(valueOfElement.disc) + "</td>" +
+                        "<td class='text-right'>" + addCommas(valueOfElement.sbtl) + "</td>" +
                         "<td><a href='#' class='btn bg-danger btn-sm deleteRow' data-indexArr='" +
                         indexInArray + "'><i class='fas fa-trash'> Hapus </i></a></td>" +
                         "</tr>";
                     $("#tableDetail tbody").html(trTd);
                     subtotal += valueOfElement.sbtl;
-                    $("#subtotal1").html(subtotal);
+                    $("#subtotal1").html(addCommas(subtotal));
                 });
+                $total = subtotal;
                 if (arrVal.length == 0) {
                     trTd = "";
-                    subtotal = 0;
-                    $("#subtotal1").html(subtotal);
+                    total = 0;
+                    $("#subtotal1").html(total);
                     $("#tableDetail tbody").html(trTd)
                 }
                 if (arrVal.length == 0) {
@@ -211,6 +269,7 @@
             // selesai pesanan
             $("#selesaiPesan").click(function(e) {
                 e.preventDefault();
+                console.log(total)
                 swal({
                     title: "Apakah Kamu yakin?",
                     text: "Transaksi selesai dan akan di simpan ke database!",
@@ -228,7 +287,8 @@
                             type: "POST",
                             url: "{{ route('Checkout.selesaiPesan') }}",
                             data: {
-                                obj: JSON.stringify(arrVal)
+                                obj: JSON.stringify(arrVal),
+                                total: parseInt(total)
                             },
                             dataType: 'JSON',
                             success: function(response) {
@@ -246,6 +306,12 @@
                 })
             });
 
+            // GetHarga
+            $("#id_barang").click(function(e) {
+                e.preventDefault();
+                var harga = addCommas($(this).find(':selected').attr('data-harga'));
+                $("#hargaJual").val(harga);
+            });
             //Selected chain
             $("#id_kategori_barang").change(function(e) {
                 e.preventDefault();
@@ -275,13 +341,14 @@
             });
         });
 
-        function initialObj(ktgBrg, nmKtg, brg, nmBrg, hrg, qty, sbtl) {
+        function initialObj(ktgBrg, nmKtg, brg, nmBrg, hrg, qty, disc, sbtl) {
             this.ktgBrg = ktgBrg;
             this.nmKtg = nmKtg;
             this.brg = brg;
             this.nmBrg = nmBrg;
             this.hrg = hrg;
             this.qty = qty;
+            this.disc = disc;
             this.sbtl = sbtl;
         }
 
@@ -293,6 +360,13 @@
             $("#hargaJual").val("");
             $("#qtyJual").val("");
             $("#selesaiPesan").prop("disabled", true);
+        }
+
+        function refreshAdd() {
+            $("#id_kategori_barang").val('');
+            $("#id_barang").val('');
+            $("#hargaJual").val('');
+            $("#qtyJual").val('');
         }
     </script>
 @endpush
