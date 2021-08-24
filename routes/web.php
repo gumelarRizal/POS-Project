@@ -1,12 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BiodataController;
 use App\Http\Controllers\MasterData\COAController;
+use App\Http\Controllers\Report\LabaRugiController;
 use App\Http\Controllers\Transaction\ReturController;
 use App\Http\Controllers\MasterData\PegawaiController;
+use App\Http\Controllers\Transaction\PresensiController;
 use App\Http\Controllers\Transaction\PembelianController;
 use App\Http\Controllers\Report\LaporanPenjualanController;
 use App\Http\Controllers\Transaction\CustomPesananController;
+use App\Http\Controllers\Transaction\PengeluaranKasController;
 use App\Http\Controllers\Transaction\checkOutPesananController;
 /*
 |--------------------------------------------------------------------------
@@ -48,12 +52,21 @@ Route::get('/COA', [COAController::class, 'index'])->name('COA.index');
 Route::POST('/COA/Read', [COAController::class, 'read'])->name('COA.Read');
 Route::POST('/COA/Store', [COAController::class, 'store'])->name('COA.Store');
 
-Route::get('/Penggajian', function () {
-    return "COA";
-})->name('Penggajian.index');
+
 Route::get('/Laporan', function () {
     return "COA";
 })->name('Laporan.index');
+// profile
+Route::get('/Profile', [BiodataController::class, 'index'])->name('profile.index');
+
+// Presensi
+Route::get('/Presensi', [PresensiController::class, 'Read'])->name('presensi.read');
+Route::get('/Presensi/Masuk', [PresensiController::class, 'Masuk'])->name('presensi.masuk');
+Route::get('/Presensi/Keluar', [PresensiController::class, 'Keluar'])->name('presensi.keluar');
+Route::get('/Presensi/check', [PresensiController::class, 'IsExistsPresensi'])->name('presensi.check');
+
+
+
 
 Route::group(['middleware'=>['role:admin']],function(){
     //checkout Pesanan
@@ -78,11 +91,18 @@ Route::group(['middleware'=>['role:admin']],function(){
     Route::post('/CustomPesanan/Simpan', [CustomPesananController::class, 'selesaiPesan'])->name('CustomPesanan.simpan');
     Route::get('/CustomPesanan/cetakInvoice', [CustomPesananController::class, 'generateInvoice'])->name('CustomPesanan.invoice');
     // Pengeluaran Kas
-    Route::get('/Pengeluaran', [CustomPesananController::class, 'index'])->name('Pengeluaran.index');
-
+    Route::get('/Pengeluaran', [PengeluaranKasController::class, 'index'])->name('Pengeluaran.index');
+    Route::POST('/Pengeluaran/read', [PengeluaranKasController::class, 'read'])->name('Pengeluaran.Read');
+    Route::POST('/Pengeluaran/simpan', [PengeluaranKasController::class, 'simpan'])->name('Pengeluaran.Save');
+    Route::get('/Pengeluaran/tambah', [PengeluaranKasController::class, 'add'])->name('Pengeluaran.add');
+    
     // Laporan Penjualan
     Route::post('/LaporanPenjualan', [LaporanPenjualanController::class, 'CustomPesanan'])->name('Report.LaporanPenjualan');
     Route::get('/Laporan', [LaporanPenjualanController::class, 'Index'])->name('Report.index');
+
+    // Laba Rugi
+    Route::get('/Laporan/LabaRugi', [LabaRugiController::class, 'index'])->name('Report.Laba');
+    Route::POST('/Laporan/LabaRugiRead', [LabaRugiController::class, 'read'])->name('Report.LabaRead');
     // Route::post('/LaporanPenjualan/customPesanan', [LaporanPenjualanController::class, 'CustomPesanan'])->name('Report.LaporanPenjualan');
     // Route::post('/Pembelian/Simpan', [CustomPesananController::class, 'simpan'])->name('Pembelian.simpan');
 });

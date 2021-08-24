@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TrPengeluaranKas extends Migration
+class TrPresensi extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class TrPengeluaranKas extends Migration
      */
     public function up()
     {
-        Schema::create('tr_pengeluaranKas',function(Blueprint $table){
+        Schema::create('tr_presensi',function(Blueprint $table){
             $table->increments('id');
-            $table->string('id_pengeluaranKas',15)->unique();
-            $table->integer('total');
-            $table->string('deskripsi',255);
-            $table->datetime('tgl_transaksi');
+            $table->string('id_presensi',15)->unique();
+            $table->integer('id_user');
+            $table->time('jam_masuk')->nullable();
+            $table->time('jam_keluar')->nullable();
+            $table->time('total_jam')->nullable();
+            $table->date('tgl_transaksi');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class TrPengeluaranKas extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tr_pengeluaranKas');
+        Schema::dropIfExists('tr_presensi');
     }
 }

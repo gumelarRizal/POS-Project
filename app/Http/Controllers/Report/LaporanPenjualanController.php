@@ -58,4 +58,7 @@ class LaporanPenjualanController extends Controller
                             })->first();
         return $listDataDetailHeader;
     }
+    public function labaRugi(){
+        return view('Report.LaporanLabaRugi');
+    }
 }

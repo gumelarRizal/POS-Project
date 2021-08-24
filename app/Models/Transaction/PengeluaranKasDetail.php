@@ -5,18 +5,16 @@ namespace App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PengeluaranKas extends Model
+class PengeluaranKasDetail extends Model
 {
     use HasFactory;
-    protected $table = 'tr_pengeluaranKas';
+    protected $table = 'dt_pengeluaranKas';
     protected $fillable = [
         'id',
+        'id_dt_pengeluaranKas',
         'id_pengeluaranKas',
-        'total',
-        'deskripsi',
-        //'id_user',
-        // 'status',
-        'tgl_transaksi',
+        'id_coa',
+        'subtotal',
         'created_at',
     ];
 }

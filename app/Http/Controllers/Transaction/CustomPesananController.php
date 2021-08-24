@@ -101,18 +101,6 @@ class CustomPesananController extends Controller
 
     }
     public function generateInvoice(){
-        // $listDataHeader = DB::table('tr_custompesanan tc')->select(DB::raw('
-        // select 
-        //     tc.id_customPesanan , tc.jumlahByr , tc.total , tc.status,
-        //     mp.nama_pelanggan , mp.alamat , mp.email 
-        // from tr_custompesanan tc
-        // join mt_pelanggan mp 
-        //     on tc.id_pelanggan = mp.id_pelanggan 
-        // where tc.id_customPesanan = (select
-        //                                 id_customPesanan 
-        //                             from tr_custompesanan 
-        //                             order by id desc
-        //                             limit 1)'))->get();
         $getDiskon = DB::table('dt_custompesanan')
                         ->select(DB::raw('SUM(discount) Disc'))
                         ->where('id_customPesanan',function($query){
