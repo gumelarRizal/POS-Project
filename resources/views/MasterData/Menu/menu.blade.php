@@ -135,10 +135,12 @@
                     });
                     var harga = $("#harga").val(),
                         stok = $("#stok").val(),
+                        hargaJual = $("#hargaJual").val().replace(/\./g, ""),
                         hargaMask = harga.replace(/\./g, ""),
                         stokMask = stok.replace(/\./g, ""),
                         formSerialize = $("#formMenu").serialize();
                     formSerialize = formSerialize + "&" + "hargaMask=" + hargaMask;
+                    formSerialize = formSerialize + "&" + "hargaJual=" + hargaJual;
                     formSerialize = formSerialize + "&" + "stokMask=" + stokMask;
                     console.log(formSerialize);
                     $.ajax({
@@ -155,24 +157,24 @@
                 })
             });
 
-            function getEdit(id, id_barang, nama, harga, stok, satuan, ktg) {
+            function getEdit(id, id_barang, nama, harga, hargaJual, stok, satuan, ktg) {
                 $("#exampleModal").modal("show");
                 $("#exampleModalLabel").html("Edit Data Barang");
                 $("#formId").val(id);
-                $("#form-id_barang").val(id_barang);
                 $("#form-id_kategori_barang").val(ktg).attr('selected', 'selected');
                 $("#form-nama_barang").val(nama);
                 $("#harga").val(harga);
+                $("#hargaJual").val(hargaJual);
                 $("#stok").val(stok);
                 $("#satuan").val(satuan);
             }
 
             function resetModal() {
                 $("#formId").val("");
-                $("#form-id_barang").val("");
                 $("#form-nama_barang").val("");
                 $("#form-id_kategori_barang").val("");
                 $("#harga").val("");
+                $("#hargaJual").val("");
                 $("#stok").val("");
                 $("#satuan").val("");
             }

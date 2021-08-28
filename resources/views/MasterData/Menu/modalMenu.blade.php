@@ -13,13 +13,6 @@
                     @csrf
                     <input type="hidden" name="id" id="formId" value="">
                     <div class="form-group">
-                        <label>Kode Barang</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Kode Barang" name="id_barang"
-                                id="form-id_barang">
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label>Kategori Barang</label>
                         <div class="input-group">
                             <select name="id_kategori_barang" id="form-id_kategori_barang" class="form-control">
@@ -42,15 +35,29 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Harga</label>
+                                <label>Harga Beli</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
-                                            <i class="fas fa-dollar-sign"></i>
+                                            Rp.
                                         </div>
                                     </div>
                                     <input type="text" class="form-control number-mask" placeholder="00.0" name="harga"
                                         id="harga" onkeypress="validatenumber(event)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Harga Jual</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            Rp.
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control number-mask" placeholder="00.0" name="harga"
+                                        id="hargaJual" onkeypress="validatenumber(event)">
                                 </div>
                             </div>
                         </div>
@@ -68,11 +75,21 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Satuan</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Satuan" name="satuan" id="satuan">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Satuan</label>
+                                <div class="input-group">
+                                    {{-- <input type="text" class="form-control" placeholder="Satuan" name="satuan"
+                                        id="satuan"> --}}
+                                    <select name="satuan" id="satuan" class="form-control">
+                                        <option selected disabled>--pilih satuan--</option>
+                                        <option value="meter">Meter</option>
+                                        <option value="pcs">PCS</option>
+                                        <option value="rim">Dus</option>
+                                        <option value="karton">Karton</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

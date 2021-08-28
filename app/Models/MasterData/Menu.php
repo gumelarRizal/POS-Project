@@ -16,6 +16,7 @@ class Menu extends Model
         'nama_barang',
         'stok',
         'harga',
+        'harga_jual',
         'satuan',
         'created_at',
     ];

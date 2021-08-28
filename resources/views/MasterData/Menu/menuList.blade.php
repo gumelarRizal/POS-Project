@@ -30,11 +30,8 @@
                 <td>{{ number_format($item->stok) }}</td>
                 <td>{{ $item->satuan }}</td>
                 <td align="center">
-                    <a href="#" class="btn bg-danger btn-sm">
-                        <i class="fas fa-trash"> Hapus </i>
-                    </a>
                     <a href="#" class="btn bg-warning btn-sm btn-edit" {{-- data-id="{{ $item->id }}" --}}
-                        onclick="getEdit( {{ $item->id }},'{{ $item->id_barang }}','{{ $item->nama_barang }}',{{ $item->harga }},{{ $item->stok }},'{{ $item->satuan }}','{{ $item->id_kategori_barang }}')">
+                        onclick="getEdit( {{ $item->id }},'{{ $item->id_barang }}','{{ $item->nama_barang }}',{{ $item->harga }},{{ $item->harga_jual }},{{ $item->stok }},'{{ $item->satuan }}','{{ $item->id_kategori_barang }}')">
                         <i class="fas fa-edit"> Edit </i>
                     </a>
                 </td>

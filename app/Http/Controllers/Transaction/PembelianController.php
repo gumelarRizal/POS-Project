@@ -21,7 +21,7 @@ class PembelianController extends Controller
     }
 
     public function barang(Request $request){
-        $barang = Menu::where('id_kategori_barang', $request->id)->select('id_barang', 'nama_barang')->get();
+        $barang = Menu::where('id_kategori_barang', $request->id)->select('id_barang', 'nama_barang','harga')->get();
         return response()->json($barang);
     }
 

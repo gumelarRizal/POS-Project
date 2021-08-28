@@ -1,7 +1,7 @@
 @extends('layouts.MainLayouts')
 
 @php
-    $titleBreadcrump = "Pembelian";
+$titleBreadcrump = 'Pembelian';
 @endphp
 
 @section('content')
@@ -19,20 +19,22 @@
                                 <select class="form-control" name="kategori" id="kategori">
                                     <option value="" selected>--Pilih Kategory--</option>
                                     @foreach ($kategori as $kategor)
-                                        <option value="{{ $kategor->id_kategori_barang }}">{{ $kategor->nama_kategori_barang }}</option>
+                                        <option value="{{ $kategor->id_kategori_barang }}">
+                                            {{ $kategor->nama_kategori_barang }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="barang" class="form-control-label">Barang</label>
                                 <select class="form-control" name="barang" id="barang">
+
                                 </select>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="harga" class="form-control-label">Harga</label>
-                                        <input class="form-control angka" type="number" name="harga" id="harga">
+                                        <input class="form-control angka" type="number" name="harga" id="harga" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -79,7 +81,8 @@
                         <tbody></tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="5" class="text-right text-uppercase font-weight-bold"><strong>Total</strong></td>
+                                <td colspan="5" class="text-right text-uppercase font-weight-bold"><strong>Total</strong>
+                                </td>
                                 <td id="total" class="text-right font-weight-bold"></td>
                             </tr>
                         </tfoot>
@@ -96,15 +99,15 @@
 @endsection
 @push('after-script')
     <script>
-        $(document).ready(function () {
-            $(".angka").on("keypress keyup blur",function (event) {    
+        $(document).ready(function() {
+            $(".angka").on("keypress keyup blur", function(event) {
                 $(this).val($(this).val().replace(/[^\d].+/, ""));
                 if ((event.which < 48 || event.which > 57)) {
                     event.preventDefault();
                 }
             });
 
-            $("#kategori").on('change', function (e) {
+            $("#kategori").on('change', function(e) {
                 e.preventDefault();
                 var barang = $("#kategori").val();
 
@@ -118,17 +121,30 @@
                     type: "post",
                     url: "{{ route('Pembelian.barang') }}",
                     data: {
-                        id : barang
+                        id: barang
                     },
                     dataType: "json",
-                    success: function (response) {
+                    success: function(response) {
                         // console.log(response);
                         $("#barang").empty();
-                        $.each(response, function (key, value) { 
-                            $("#barang").append(new Option(value.nama_barang, value.id_barang));
+                        var str = '<option value="" selected disabled>--Pilih Barang--</option>'
+                        $.each(response, function(key, value) {
+                            str += '<option value="' + value.id_barang +
+                                '" data-hargaBeli = "' + value.harga +
+                                '">' + value.nama_barang +
+                                '</option>'
+                            $("#barang").append(str)
+                            // $("#barang").append(new Option(value.nama_barang, value
+                            //     .id_barang));
                         });
                     }
                 });
+            });
+
+            $("#barang").click(function(e) {
+                e.preventDefault();
+                var harga = addCommas($(this).find(':selected').attr('data-hargaBeli'));
+                $("#harga").val(harga);
             });
 
             var arrVal = [];
@@ -136,37 +152,38 @@
                 $("#pembelian").prop("disabled", true);
             }
 
-            $("#Beli").click(function (e) { 
+            $("#Beli").click(function(e) {
                 e.preventDefault();
                 var kategori = $("#kategori").val();
                 var kategori_nama = $("#kategori option:selected").text();
                 var barang = $("#barang").val();
                 var barang_nama = $("#barang option:selected").text();
-                var harga = $("#harga").val();
+                var harga = $("#harga").val().replace('.', '');
                 var jumlah = $("#jumlah").val();
-                var subtotals = harga*jumlah;
+                var subtotals = harga * jumlah;
 
-                if(kategori == "" || barang == "" || harga == "" || jumlah == ""){
+                if (kategori == "" || barang == "" || harga == "" || jumlah == "") {
                     //alert("kosong nih boss!!");
                     swal({
-                        icon : 'warning',
-                        title : 'Oops...',
-                        text : 'Input tidak boleh kosong!'
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: 'Input tidak boleh kosong!'
                     });
-                }
-                else{
-                    objVal = new initialObj(kategori, kategori_nama, barang, barang_nama, harga, jumlah,subtotals);
+                } else {
+                    objVal = new initialObj(kategori, kategori_nama, barang, barang_nama, harga, jumlah,
+                        subtotals);
                     arrVal.push(objVal);
                     subtotals = 0;
                     var tabel = "";
-                    $.each(arrVal, function (indexInArray, valueOfElement) { 
-                        tabel += "<tr><td>"+valueOfElement.nmKtg+
-                                    "</td><td>"+valueOfElement.nmBrg+
-                                    "</td><td class='text-right'>"+valueOfElement.jml+
-                                    "</td><td class='text-right'>"+valueOfElement.hrg+
-                                    "</td><td class='text-right'>"+valueOfElement.sbtl+
-                                    "</td><td><button class='btn btn-danger hapus' data-idx="+indexInArray+
-                                    ">Hapus</button></td></tr>";
+                    $.each(arrVal, function(indexInArray, valueOfElement) {
+                        tabel += "<tr><td>" + valueOfElement.nmKtg +
+                            "</td><td>" + valueOfElement.nmBrg +
+                            "</td><td class='text-right'>" + valueOfElement.jml +
+                            "</td><td class='text-right'>" + valueOfElement.hrg +
+                            "</td><td class='text-right'>" + valueOfElement.sbtl +
+                            "</td><td><button class='btn btn-danger hapus' data-idx=" +
+                            indexInArray +
+                            ">Hapus</button></td></tr>";
                         $("#detailbeli tbody").html(tabel);
                         subtotals += valueOfElement.sbtl;
                         $("#total").html(subtotals);
@@ -178,21 +195,21 @@
                 }
             });
 
-            $("#detailbeli").on('click','.hapus', function (e) { 
+            $("#detailbeli").on('click', '.hapus', function(e) {
                 e.preventDefault();
                 var indexArr = $(this).attr("data-idx"),
                     subtotals = 0,
                     tabel = "";
 
                 arrVal.splice(indexArr, 1);
-                $.each(arrVal, function (indexInArray, valueOfElement) { 
-                    tabel += "<tr><td>"+valueOfElement.nmKtg+
-                                "</td><td>"+valueOfElement.nmBrg+
-                                "</td><td>"+valueOfElement.jml+
-                                "</td><td>"+valueOfElement.hrg+
-                                "</td><td>"+valueOfElement.sbtl+
-                                "</td><td><button class='btn btn-danger hapus' data-idx="+indexInArray+
-                                ">Hapus</button></td></tr>";
+                $.each(arrVal, function(indexInArray, valueOfElement) {
+                    tabel += "<tr><td>" + valueOfElement.nmKtg +
+                        "</td><td>" + valueOfElement.nmBrg +
+                        "</td><td>" + valueOfElement.jml +
+                        "</td><td>" + valueOfElement.hrg +
+                        "</td><td>" + valueOfElement.sbtl +
+                        "</td><td><button class='btn btn-danger hapus' data-idx=" + indexInArray +
+                        ">Hapus</button></td></tr>";
                     $("#detailbeli tbody").html(tabel);
                     subtotals += valueOfElement.sbtl;
                     $("#total").html(subtotals);
@@ -207,7 +224,7 @@
                 console.log(arrVal);
             });
 
-            $("#pembelian").click(function (e) { 
+            $("#pembelian").click(function(e) {
                 e.preventDefault();
                 swal({
                     title: "Apakah Kamu yakin?",
@@ -227,7 +244,7 @@
                             url: "{{ route('Pembelian.simpan') }}",
                             data: {
                                 obj: JSON.stringify(arrVal),
-                                total : parseInt($("#total").html())
+                                total: parseInt($("#total").html())
                             },
                             dataType: 'JSON',
                             success: function(response) {
@@ -241,7 +258,7 @@
                 });
             });
 
-            function initialObj(kategori, kategori_nama, barang, barang_nama, harga, jumlah,subtotals){
+            function initialObj(kategori, kategori_nama, barang, barang_nama, harga, jumlah, subtotals) {
                 this.ktg = kategori;
                 this.nmKtg = kategori_nama;
                 this.brg = barang;
@@ -251,14 +268,14 @@
                 this.sbtl = subtotals;
             }
 
-            function hapusForm(){
+            function hapusForm() {
                 $("#kategori").val("");
                 $("#barang").empty();
                 $("#harga").val("");
                 $("#jumlah").val("");
             }
 
-            function clearPage(){
+            function clearPage() {
                 $("#total").html("0");
                 $("#detailbeli tbody").html("");
                 $("#kategori").val("");

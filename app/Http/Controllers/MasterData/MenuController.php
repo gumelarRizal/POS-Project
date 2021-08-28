@@ -24,6 +24,7 @@ class MenuController extends Controller
         $kode_kelas = '';
         $titleBreadcrump = 'Barang';
         $dropDownKtgBarang = KategoriBarang::all();
+        
         return view('MasterData.Menu.menu',['titleBreadcrump'=>$titleBreadcrump,'dropDownKtgBarang'=>$dropDownKtgBarang]);
     }
     
@@ -40,6 +41,7 @@ class MenuController extends Controller
                 a.id_barang,
                 a.nama_barang,
                 a.harga,
+                a.harga_jual,
                 a.satuan,
                 a.stok,
                 b.id_kategori_barang,
@@ -73,13 +75,15 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
+        $kd_barang = GenerateAutoIncrementCd('mt_barang','id_barang','BRG');
         $msg = [];
         if($request->id==""){
             $result = Menu::create([
-                'id_barang' => $request->id_barang,
+                'id_barang' => $kd_barang,
                 'id_kategori_barang' => $request->id_kategori_barang,
                 'nama_barang' => $request->nama_barang,
                 'harga' => $request->hargaMask,
+                'harga_jual' => $request->hargaJual,
                 'stok' => $request->stokMask,
                 'satuan' => $request->satuan
             ]);
@@ -89,10 +93,10 @@ class MenuController extends Controller
         }
         else{  
             $result = Menu::where('id',$request->id)->update([
-                'id_barang' => $request->id_barang,
                 'id_kategori_barang' => $request->id_kategori_barang,
                 'nama_barang' => $request->nama_barang,
                 'harga' => $request->hargaMask,
+                'harga_jual' => $request->hargaJual,
                 'stok' => $request->stokMask,
                 'satuan' => $request->satuan
             ]);

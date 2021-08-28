@@ -59,7 +59,7 @@
                                 <div class="col-md-6">
                                     <label for="">Harga Jual</label>
                                     <div class="form-group">
-                                        <input type="number" name="hargaJual" id="hargaJual" class="form-control">
+                                        <input type="number" name="hargaJual" id="hargaJual" class="form-control" readonly>
                                         <div class="invalid-feedback" id="feedbackNamamenu">
 
                                         </div>

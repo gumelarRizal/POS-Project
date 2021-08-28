@@ -40,7 +40,7 @@ class checkOutPesananController extends Controller
         $html = "<option value='' selected disabled>--Pilih--</option>";
         $listData = Menu::where('id_kategori_barang', $request->id_kategori_barang)->get();
         foreach ($listData as $row) {
-            $html .= "<option value='" . $row->id_barang . "' data-nmbrg='" . $row->nama_barang . "' data-harga='" . $row->harga . "'>" . $row->nama_barang . "</option>";
+            $html .= "<option value='" . $row->id_barang . "' data-nmbrg='" . $row->nama_barang . "' data-harga='" . $row->harga_jual . "'>" . $row->nama_barang . "</option>";
         }
         return $html;
     }
