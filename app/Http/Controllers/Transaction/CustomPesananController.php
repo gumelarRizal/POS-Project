@@ -93,6 +93,10 @@ class CustomPesananController extends Controller
                 'deskripsi'             => $item->deskripsi,
                 'qty'                   => $item->qty,
             ]);
+
+            Menu::where('id_kategori_barang', '=', $item->ktgBrg)
+                ->where('id_barang', '=', $item->brg)
+                ->decrement('stok', $item->qty);
         }
         if ($result) {
             $msg = ['msg' => 'Transaksi berhasil'];

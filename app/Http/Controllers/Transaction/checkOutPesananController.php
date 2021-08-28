@@ -70,6 +70,10 @@ class checkOutPesananController extends Controller
                 'disc' => $item->disc,
                 'id_user' => Auth::user()->id
             ]);
+
+            Menu::where('id_kategori_barang', '=', $item->ktgBrg)
+                ->where('id_barang', '=', $item->brg)
+                ->decrement('stok', $item->qty);
         }
         
         if ($result) {
