@@ -27,6 +27,7 @@
                 <td>{{ $item->nama_kategori_barang }}</td>
                 <td>{{ $item->nama_barang }}</td>
                 <td>{{ 'Rp.' . number_format($item->harga) }}</td>
+                <td>{{ 'Rp.' . number_format($item->harga_jual) }}</td>
                 <td>{{ number_format($item->stok) }}</td>
                 <td>{{ $item->satuan }}</td>
                 <td align="center">
