@@ -105,6 +105,10 @@ Route::group(['middleware'=>['role:admin']],function(){
     Route::POST('/Laporan/LabaRugiRead', [LabaRugiController::class, 'read'])->name('Report.LabaRead');
     // Route::post('/LaporanPenjualan/customPesanan', [LaporanPenjualanController::class, 'CustomPesanan'])->name('Report.LaporanPenjualan');
     // Route::post('/Pembelian/Simpan', [CustomPesananController::class, 'simpan'])->name('Pembelian.simpan');
+
+    // presensi karyawan
+    Route::get('/Laporan/Presensi', [PresensiController::class,'index'])->name('presensi.index');
+    Route::POST('/Laporan/PresensiList', [PresensiController::class,'lapPresensi'])->name('presensi.list');
 });
 
 Route::get('/Jurnal', function () {

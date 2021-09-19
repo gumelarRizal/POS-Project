@@ -15,6 +15,12 @@ class PresensiController extends Controller
         $this->middleware('auth');
     }
 
+    public function index(){
+        $titleBreadcrump = 'Checkout';
+        $cmbUser = DB::table('users')->select('id','name')->get();
+        return view('Report.LapPresensi',compact('titleBreadcrump','cmbUser'));
+    }
+
     public function Read(){
         date_default_timezone_set("Asia/Bangkok");
         $listData = Presensi::select('jam_masuk','jam_keluar','total_jam')
@@ -84,5 +90,31 @@ class PresensiController extends Controller
             'check'=>$check   
         ];
         return response()->json($resp);
+    }
+
+    public function lapPresensi(Request $request){
+        $yymn = date('Ym');
+        // $where = '1=1 and date_format(tgl_transaksi,"%Y%m") = '.$yymn.''; opt
+        $where = '1=1';
+        if($request->userName != null){
+            $where = '1=1 and date_format(tgl_transaksi,"%Y%m") = '.$yymn.' and users.id = '.$request->userName.'';
+        }
+        if($request->tanggal != null){
+            $yymn = str_replace('-','',$request->tanggal); 
+            $where = '1=1 and date_format(tgl_transaksi,"%Y%m") = '.$yymn.'';
+        }
+        if($request->userName != null && $request->tanggal != null){
+            $yymn = str_replace('-','',$request->tanggal);
+            $where = '1=1 and date_format(tgl_transaksi,"%Y%m") = '.$yymn.' and users.id = '.$request->userName.'';
+        }
+        
+        $listData = DB::table('tr_presensi')
+                    ->select(DB::Raw('tr_presensi.id,users.name ,tr_presensi.jam_masuk ,tr_presensi.jam_keluar ,substr(total_jam,7,1) TotalJamKerja,tgl_transaksi'))
+                    ->join('users','tr_presensi.id_user', '=', 'users.id')
+                    ->whereRaw(''.$where.'')
+                    ->get();
+        $html = view('Report.LapPresensiList',compact('listData'));
+        return $html;
+        
     }
 }
