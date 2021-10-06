@@ -97,7 +97,7 @@ class PresensiController extends Controller
         // $where = '1=1 and date_format(tgl_transaksi,"%Y%m") = '.$yymn.''; opt
         $where = '1=1';
         if($request->userName != null){
-            $where = '1=1 and date_format(tgl_transaksi,"%Y%m") = '.$yymn.' and users.id = '.$request->userName.'';
+            $where = '1=1 and users.id = '.$request->userName.'';
         }
         if($request->tanggal != null){
             $yymn = str_replace('-','',$request->tanggal); 

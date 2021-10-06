@@ -8,6 +8,7 @@
             <th>Kategori Barang</th>
             <th>Nama Barang</th>
             <th>Harga Barang</th>
+            <th>Harga Jual Barang</th>
             <th>Stok Barang</th>
             <th>Satuan Barang</th>
             <th class="text-center">Action</th>

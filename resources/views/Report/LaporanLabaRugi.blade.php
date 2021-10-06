@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="javascript:void(0)" id="formSearchPengeluaranKas">
+                    <form method="POST" action="javascript:void(0)" id="formSearchLabarugi">
                         <div class="col-sm-12 col-md-12 text-right">
                             @csrf
                             <div class="form-group row mb-4">
@@ -52,6 +52,27 @@
                 viewMode: "months",
                 minViewMode: "months"
             })
+
+            $("#btnSearchChck").click(function() {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('Report.LabaRead') }}",
+                    data: $("#formSearchLabarugi").serialize(),
+                    dataType: "html",
+                    beforeSend: function() {
+                        $('#loaderChck').fadeIn('slow');
+                    },
+                    success: function(response) {
+                        $('#loaderChck').fadeOut('slow');
+                        $('#dataListChck').html(response);
+                    }
+                });
+            });
         });
 
         function pageLoad() {

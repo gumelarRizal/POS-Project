@@ -6,6 +6,7 @@ use App\Http\Controllers\MasterData\COAController;
 use App\Http\Controllers\Report\LabaRugiController;
 use App\Http\Controllers\Transaction\ReturController;
 use App\Http\Controllers\MasterData\PegawaiController;
+use App\Http\Controllers\MasterData\PelangganController;
 use App\Http\Controllers\Transaction\PresensiController;
 use App\Http\Controllers\Transaction\PembelianController;
 use App\Http\Controllers\Report\LaporanPenjualanController;
@@ -52,6 +53,9 @@ Route::get('/COA', [COAController::class, 'index'])->name('COA.index');
 Route::POST('/COA/Read', [COAController::class, 'read'])->name('COA.Read');
 Route::POST('/COA/Store', [COAController::class, 'store'])->name('COA.Store');
 
+// Pelanggan
+Route::get('/Pelanggan', [PelangganController::class, 'index'])->name('Pelanggan.index');
+
 
 Route::get('/Laporan', function () {
     return "COA";
@@ -65,7 +69,7 @@ Route::get('/Presensi/Masuk', [PresensiController::class, 'Masuk'])->name('prese
 Route::get('/Presensi/Keluar', [PresensiController::class, 'Keluar'])->name('presensi.keluar');
 Route::get('/Presensi/check', [PresensiController::class, 'IsExistsPresensi'])->name('presensi.check');
 
-
+// dashboard
 
 
 Route::group(['middleware'=>['role:admin']],function(){
@@ -98,6 +102,7 @@ Route::group(['middleware'=>['role:admin']],function(){
     
     // Laporan Penjualan
     Route::post('/LaporanPenjualan', [LaporanPenjualanController::class, 'CustomPesanan'])->name('Report.LaporanPenjualan');
+    Route::post('/LaporanPenjualanCheck', [LaporanPenjualanController::class, 'CheckoutPesanan'])->name('Report.LaporanPenjualanCheck');
     Route::get('/Laporan', [LaporanPenjualanController::class, 'Index'])->name('Report.index');
 
     // Laba Rugi

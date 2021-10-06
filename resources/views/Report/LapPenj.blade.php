@@ -28,7 +28,7 @@
                                     <form method="POST" action="javascript:void(0)" id="formChckPnj">
                                         @csrf
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <label for="">Tanggal (bulan/tahun)</label>
                                                 <div class="form-group">
                                                     <input type="text" name="tanggalChck" id="tanggalChck"
@@ -38,11 +38,25 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <label for="">ID Transaksi</label>
                                                 <div class="form-group">
                                                     <input type="text" name="nama_kategori_barang" id="id_transChck"
                                                         class="form-control">
+                                                    <div class="invalid-feedback" id="feedbackNmKtgBrg">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label for="">Kasir</label>
+                                                <div class="form-group">
+                                                    <select name="kasir" id="kasir" class="form-control">
+                                                        <option disabled selected>--pilih kasir--</option>
+                                                        @foreach ($cashier as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                     <div class="invalid-feedback" id="feedbackNmKtgBrg">
 
                                                     </div>
@@ -63,9 +77,12 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-sm-12 col-md-12" id="dataListChck">
+                                <div class="col-sm-12 col-md-12">
                                     <div class="alert alert-primary" id="loaderChck" style="display:none" role="alert">
                                         Mohon tunggu <i class="fas fa-spinner fa-pulse"></i>
+                                    </div>
+                                    <div id="dataListChck">
+
                                     </div>
                                 </div>
                             </div>
@@ -109,10 +126,11 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-sm-12 col-md-12" id="dataListCust">
+                                <div class="col-sm-12 col-md-12">
                                     <div class="alert alert-primary" id="loader" style="display:none" role="alert">
                                         Mohon tunggu <i class="fas fa-spinner fa-pulse"></i>
                                     </div>
+                                    <div id="dataListCust"></div>
                                 </div>
                             </div>
                         </div>
@@ -127,22 +145,53 @@
     <script>
         $(document).ready(function() {
             $("#tanggalChck").datepicker({
-                format: "mm-yyyy",
+                format: "yyyy-mm",
                 viewMode: "months",
                 minViewMode: "months"
             })
             $("#tanggalCust").datepicker({
-                format: "mm-yyyy",
+                format: "yyyy-mm",
                 viewMode: "months",
                 minViewMode: "months"
             })
             PageLoad1();
+            PageLoad2();
+
+            $("#btnSearchChck").click(function(e) {
+                e.preventDefault();
+            });
+            $("#btnSearchCust").click(function(e) {
+                e.preventDefault();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('Report.LaporanPenjualan') }}",
+                    data: $("#formCustPnj").serialize(),
+                    dataType: "html",
+                    beforeSend: function() {
+                        $('#loader').fadeIn('slow');
+                    },
+                    success: function(response) {
+                        $('#loader').fadeOut('slow');
+                        $('#dataListCust').html(response);
+                        $("#table-1").DataTable({
+                            searching: false,
+                        });
+                    }
+                });
+
+            });
 
             // $('#loader').fadeIn('slow');
             $(".detailCust").click(function(e) {
                 e.preventDefault();
                 // alert($(this).attr('data-idtranscust'));
-
             });
         });
 
@@ -161,6 +210,27 @@
                     $('#loader').fadeOut('slow');
                     $('#dataListCust').html(response);
                     $("#table-1").DataTable({
+                        searching: false,
+                    });
+                }
+            });
+        }
+
+        function PageLoad2() {
+            $.ajax({
+                type: "post",
+                url: "{{ route('Report.LaporanPenjualanCheck') }}",
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: "html",
+                beforeSend: function() {
+                    $('#loaderChck').fadeIn('slow');
+                },
+                success: function(response) {
+                    $('#loaderChck').fadeOut('slow');
+                    $('#dataListChck').html(response);
+                    $("#table-2").DataTable({
                         searching: false,
                     });
                 }

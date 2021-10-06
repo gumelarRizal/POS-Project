@@ -54,6 +54,16 @@
         <div class="col-lg-12 col-md-12 col-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
+                    <h4>Persentase pendapatan</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="myChart" width="500" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
                     <h4>List Barang</h4>
                 </div>
                 <div class="card-body">
@@ -79,7 +89,7 @@
                         </div>
                     </ul>
                     <div class="text-center pt-1 pb-1">
-                        <a href="#" class="btn btn-primary btn-lg btn-round">
+                        <a href="{{ route('Menu.index') }}" class="btn btn-primary btn-lg btn-round">
                             View All
                         </a>
                     </div>

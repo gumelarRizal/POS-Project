@@ -17,6 +17,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
+<script src="{{ url('assets/js/page/modules-chartjs.js') }}"></script>
 <script src="{{ url('assets/js/stisla.js') }}"></script>
 
 <!-- JS Libraies -->
@@ -25,6 +26,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 <script src="{{ url('assets/js/scripts.js') }}"></script>
 <script src="{{ url('assets/js/custom.js') }}"></script>
 <script src="{{ url('assets/js/global.js') }}"></script>
+{{-- <script src="{{ url('js/app.js') }}"></script> --}}
 <script src="{{ url('assets/js/page/bootstrap-modal.js') }}"></script>
 
 <!-- Page Specific JS File -->
