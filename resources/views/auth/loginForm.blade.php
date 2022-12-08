@@ -74,7 +74,7 @@
                                     </div>
                                 </form>
                                 <div class="mt-5 text-muted text-center">
-                                    Don't have an account? <a href="{{ route('auth.register') }}">Create One</a>
+                                    Don't have an account? <a href="{{ route('auth.register') }}">Register</a>
                                 </div>
                             </div>
                         </div>

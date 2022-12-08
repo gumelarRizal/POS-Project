@@ -18,7 +18,7 @@
                                     <label for="">No Telp</label>
                                     <div class="form-group">
                                         <input type="text" name="notelp" id="notelp" class="form-control">
-                                        <div class="invalid-feedback" id="feedbackIdmenu">
+                                        <div class="invalid-feedback" id="feedbacknoTelp">
 
                                         </div>
                                     </div>
@@ -27,7 +27,7 @@
                                     <label for="">Nama Pelanggan</label>
                                     <div class="form-group">
                                         <input type="text" name="nama_pelanggan" id="nama_pelanggan" class="form-control">
-                                        <div class="invalid-feedback" id="feedbackNamamenu">
+                                        <div class="invalid-feedback" id="feedbackNamaPelanggan">
 
                                         </div>
                                     </div>
@@ -56,10 +56,11 @@
                         </form>
                         <hr>
                     </div>
-                    <div class="col-sm-12" id="dataList">
+                    <div class="col-sm-12">
                         <div class="alert alert-primary" id="loader" style="display:none" role="alert">
                             Mohon tunggu <i class="fas fa-spinner fa-pulse"></i>
                         </div>
+                        <div id="dataList"></div>
                         {{-- @include('MasterData.Menu.menuList') --}}
                     </div>
                 </div>
@@ -69,25 +70,21 @@
     @push('after-script')
         <script>
             $(document).ready(function() {
-                // pageload();
-                // set_mask2();
+                pageload();
 
                 $("#addModal").on("click", function() {
-                    $("#exampleModalLabel").html("Tambah Data Barang");
+                    $("#exampleModalLabel").html("Tambah Data Pelanggan");
                 });
 
                 $("#btnSearch").click(function() {
                     var flagErr = 0;
-                    var idMenu = $("#id_barang").val();
-                    var namaMenu = $("#nama_barang").val();
-                    if (!idMenu) {
-                        $("#id_barang").addClass("is-invalid");
-                        $("#feedbackIdmenu").html("Kolom Id Menu tidak boleh kosong");
-                        flagErr = 1
-                    }
-                    if (!idMenu) {
-                        $("#nama_barang").addClass("is-invalid");
-                        $("#feedbackNamamenu").html("Kolom Nama Menu tidak boleh kosong");
+                    var noTelp = $("#notelp").val();
+                    var namaMenu = $("#nama_pelanggan").val();
+                    if (noTelp == "" && namaMenu == "") {
+                        $("#notelp").addClass("is-invalid");
+                        $("#feedbacknoTelp").html("Kolom No Telfon tidak boleh kosong");
+                        $("#nama_pelanggan").addClass("is-invalid");
+                        $("#feedbackNamaPelanggan").html("Kolom Nama Pelanggan tidak boleh kosong");
                         flagErr = 1
                     }
                     if (flagErr == 0) {
@@ -98,7 +95,7 @@
                         });
                         $.ajax({
                             method: "post",
-                            url: "{{ route('Menu.Read') }}",
+                            url: "{{ route('Pelanggan.read') }}",
                             data: $("#formSearch").serialize(),
                             dataType: "html",
                             beforeSend: function() {
@@ -107,8 +104,8 @@
                             success: function(response) {
                                 $('#loader').fadeOut('slow');
                                 $('#dataList').html(response);
-                                $("#id_barang").removeClass("is-invalid");
-                                $("#nama_barang").removeClass("is-invalid");
+                                $("#notelp").removeClass("is-invalid");
+                                $("#nama_pelanggan").removeClass("is-invalid");
                                 $("#table-1").DataTable({
                                     searching: false,
                                 });
@@ -119,10 +116,10 @@
 
                 $("#clearId").click(function(e) {
                     e.preventDefault();
-                    $("#id_barang").val("");
-                    $("#nama_barang").val("");
-                    $("#id_barang").removeClass("is-invalid");
-                    $("#nama_barang").removeClass("is-invalid");
+                    $("#notelp").val("");
+                    $("#nama_pelanggan").val("");
+                    $("#notelp").removeClass("is-invalid");
+                    $("#nama_pelanggan").removeClass("is-invalid");
                     pageload();
                 });
 
@@ -133,18 +130,10 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    var harga = $("#harga").val(),
-                        stok = $("#stok").val(),
-                        hargaJual = $("#hargaJual").val().replace(/\./g, ""),
-                        hargaMask = harga.replace(/\./g, ""),
-                        stokMask = stok.replace(/\./g, ""),
-                        formSerialize = $("#formMenu").serialize();
-                    formSerialize = formSerialize + "&" + "hargaMask=" + hargaMask;
-                    formSerialize = formSerialize + "&" + "hargaJual=" + hargaJual;
-                    formSerialize = formSerialize + "&" + "stokMask=" + stokMask;
+                    var formSerialize = $("#formPelanggan").serialize();
                     console.log(formSerialize);
                     $.ajax({
-                        url: "{{ route('Menu.store') }}",
+                        url: "{{ route('Pelanggan.store') }}",
                         method: "post",
                         data: formSerialize,
                         success: function(resp) {
@@ -157,32 +146,28 @@
                 })
             });
 
-            function getEdit(id, id_barang, nama, harga, hargaJual, stok, satuan, ktg) {
+            function getEdit(id, nama_pelanggan, email, no_telp, alamat) {
                 $("#exampleModal").modal("show");
                 $("#exampleModalLabel").html("Edit Data Barang");
                 $("#formId").val(id);
-                $("#form-id_kategori_barang").val(ktg).attr('selected', 'selected');
-                $("#form-nama_barang").val(nama);
-                $("#harga").val(harga);
-                $("#hargaJual").val(hargaJual);
-                $("#stok").val(stok);
-                $("#satuan").val(satuan);
+                $("#form-nama_pelanggan").val(nama_pelanggan);
+                $("#form-email").val(email);
+                $("#form-no_telp").val(no_telp);
+                $("#alamat").val(alamat);
             }
 
             function resetModal() {
                 $("#formId").val("");
-                $("#form-nama_barang").val("");
-                $("#form-id_kategori_barang").val("");
-                $("#harga").val("");
-                $("#hargaJual").val("");
-                $("#stok").val("");
-                $("#satuan").val("");
+                $("#form-nama_pelanggan").val("");
+                $("#form-email").val("");
+                $("#form-no_telp").val("");
+                $("#alamat").val("");
             }
 
             function pageload() {
                 $.ajax({
                     method: "post",
-                    url: "{{ route('Menu.Read') }}",
+                    url: "{{ route('Pelanggan.read') }}",
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
@@ -203,5 +188,5 @@
     @endpush
 @endsection
 @section('modal')
-    {{-- @include('MasterData.Menu.modalMenu') --}}
+    @include('MasterData.Pelanggan.ModalPelanggan')
 @endsection

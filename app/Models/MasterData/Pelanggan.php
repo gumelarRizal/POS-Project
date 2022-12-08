@@ -15,6 +15,7 @@ class Pelanggan extends Model
         'nama_pelanggan',
         'alamat',
         'email',
+        'no_telp',
         'created_at',
     ];
 }

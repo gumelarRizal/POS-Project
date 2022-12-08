@@ -55,6 +55,8 @@ Route::POST('/COA/Store', [COAController::class, 'store'])->name('COA.Store');
 
 // Pelanggan
 Route::get('/Pelanggan', [PelangganController::class, 'index'])->name('Pelanggan.index');
+Route::POST('/Pelanggan/Read', [PelangganController::class, 'read'])->name('Pelanggan.read');
+Route::POST('/Pelanggan/Store', [PelangganController::class, 'store'])->name('Pelanggan.store');
 
 
 Route::get('/Laporan', function () {
